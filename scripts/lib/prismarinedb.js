@@ -104,6 +104,10 @@ class PrismarineDBTable {
     findDocuments(query) {
         let docs = [];
         for(const doc of this.data) {
+            if(query == null) {
+                docs.push(doc);
+                continue;
+            }
             if(this.matchesQuery(query, doc.data)) docs.push(doc);
         }
         return docs;

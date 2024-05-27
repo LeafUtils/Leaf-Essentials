@@ -2,6 +2,7 @@ import { system, ScriptEventSource } from '@minecraft/server';
 import uiManager from './uiManager';
 import config from './config';
 import './uis/uiBuilder/root';
+import './uis/uiBuilder/add';
 system.afterEvents.scriptEventReceive.subscribe(e=>{
     if(
         e.id == config.scripteventNames.openDefault &&

@@ -43,5 +43,8 @@ class UIBuilder {
         if(!doc) return;
         if(doc.data.type == 0) return normalForm.open(player, doc.data);
     }
+    getUIs() {
+        return this.db.findDocuments(null);
+    }
 }
 export default new UIBuilder();
