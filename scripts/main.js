@@ -7,6 +7,7 @@ import './uis/uiBuilder/edit';
 import './uis/uiBuilder/editButtons';
 import './uis/uiBuilder/addButton';
 import './uis/uiBuilder/editButton';
+import './uis/config/root'
 import './commands/help';
 import './commands/uisList';
 import icons from './api/icons';
@@ -26,6 +27,11 @@ world.beforeEvents.chatSend.subscribe(e=>{
     if(e.message.startsWith('!')) {
         e.cancel = true;
         commandManager.run(e)
+    }
+})
+world.afterEvents.itemUse.subscribe(e=>{
+    if(e.source.typeId == "minecraft:player" && e.itemStack.typeId == config.items.LeafConfig) {
+        uiManager.open(e.source, config.uiNames.ConfigRoot)
     }
 })
 // let id = uiBuilder.createUI("test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "normal", "test");
