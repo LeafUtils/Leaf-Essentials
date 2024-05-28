@@ -12,6 +12,10 @@ export default {
         UIBuilderEdit: "Leaf/UIBuilder/Edit",
         UIBuilderEditButtons: "Leaf/UIBuilder/EditButtons",
         UIBuilderAddButton: "Leaf/UIBuilder/AddButton",
-        UIBuilderEditButton: "Leaf/UIBuilder/EditButton"
+        UIBuilderEditButton: "Leaf/UIBuilder/EditButton",
+        ConfigRoot: "Leaf/Config/Root"
+    },
+    items: {
+        LeafConfig: "leaf:config_ui"
     }
 }
