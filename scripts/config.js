@@ -11,6 +11,7 @@ export default {
         UIBuilderAdd: "Leaf/UIBuilder/Add",
         UIBuilderEdit: "Leaf/UIBuilder/Edit",
         UIBuilderEditButtons: "Leaf/UIBuilder/EditButtons",
-        UIBuilderAddButton: "Leaf/UIBuilder/AddButton"
+        UIBuilderAddButton: "Leaf/UIBuilder/AddButton",
+        UIBuilderEditButton: "Leaf/UIBuilder/EditButton"
     }
 }

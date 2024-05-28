@@ -5,12 +5,14 @@ import './uis/uiBuilder/root';
 import './uis/uiBuilder/add';
 import './uis/uiBuilder/edit';
 import './uis/uiBuilder/editButtons';
+import './uis/uiBuilder/addButton';
+import './uis/uiBuilder/editButton';
 import './commands/help';
 import './commands/uisList';
 import icons from './api/icons';
 import azaleaIconPack from './icon_packs/azalea';
 import commandManager from './api/commands/commandManager';
-icons.install(azaleaIconPack)
+icons.install(azaleaIconPack, true)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
     if(
         e.id == config.scripteventNames.openDefault &&

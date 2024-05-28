@@ -5,11 +5,11 @@ import icons from "../icons";
 class NormalFormOpener {
     open(player, data) {
         let form = new ActionForm();
-        form.title(data.name);
+        form.title(`§r${data.name}`);
         if(data.body) form.body(data.body);
-
         for(const button of data.buttons) {
-            form.button(`${button.text}${button.subtext ? `\n§r§8${button.subtext}` : ``}`, button.iconID ? icons.resolve(button.iconID) : null, (player)=>{
+            console.warn(JSON.stringify(button));
+            form.button(`${button.text}${button.subtext ? `\n§r§7${button.subtext}` : ``}`, button.iconID ? icons.resolve(button.iconID) : null, (player)=>{
                 actionParser.runAction(player, button.action);
             });
         }
