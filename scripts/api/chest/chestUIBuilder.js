@@ -1,0 +1,84 @@
+import { prismarineDb } from "../../lib/prismarinedb";
+import icons from "../icons";
+import common from "./common";
+
+class ChestUIBuilder {
+    constructor() {
+        this.db = prismarineDb.table("Chests");
+        this.validRows = [1, 2, 3, 4, 5, 6];
+    }
+    createChestGUI(title, scriptevent, rows = 3) {
+        if(!this.validRows.includes(rows)) throw new Error("Row count is not valid.");
+        this.db.insertDocument({
+            title,
+            advanced: false,
+            scriptevent,
+            rows,
+            icons: []
+        });
+    }
+    editTitle(id, title) {
+        let doc = this.db.getByID(id);
+        if(!doc) throw new Error("UI not found");
+        doc.data.title = title;
+        this.db.overwriteDataByID(doc.id, doc.data);
+    }
+    editScriptevent(id, scriptevent) {
+        let doc = this.db.getByID(id);
+        if(!doc) throw new Error("UI not found");
+        doc.data.scriptevent = scriptevent;
+        this.db.overwriteDataByID(doc.id, doc.data);
+    }
+    editRows(id, rows) {
+        let doc = this.db.getByID(id);
+        if(!this.validRows.includes(rows)) throw new Error("Invalid row count.");
+        if(!doc) throw new Error("UI not found");
+        doc.data.scriptevent = scriptevent;
+        this.db.overwriteDataByID(doc.id, doc.data);
+    }
+    deleteChestGUI(id) {
+        this.db.deleteDocumentByID(id);
+    }
+    addIconToChestGUI(id, row, col, iconID, name, lore = [], itemStackAmount = 1) {
+        let chest = this.db.getByID(id);
+        if(!chest) throw new Error("Chest UI not found");
+        let slot = common.rowColToSlotId(row, col);
+        if(!iconID) throw new Error("Icon needs to be defined");
+        if(!icons.resolve(iconID)) {
+            throw new Error("Icon ID not valid");
+        }
+        if(!name) throw new Error("Name needs to be defined");
+        if(chest.data.icons.find(_=>_.slot == slot)) throw new Error("There is already an icon at this slot");
+        chest.data.icons.push({
+            slot,
+            iconID,
+            name,
+            lore,
+            amount: itemStackAmount
+        })
+        this.db.overwriteDataByID(chest.id, chest.data);
+    }
+    replaceIconInChestGUI(id, row, col, iconID, name, lore = [], itemStackAmount = 1, index = 0) {
+        let chest = this.db.getByID(id);
+        if(!chest) throw new Error("Chest UI not found");
+        let slot = common.rowColToSlotId(row, col);
+        if(!iconID) throw new Error("Icon needs to be defined");
+        if(!icons.resolve(iconID)) {
+            throw new Error("Icon ID not valid");
+        }
+        if(index >= chest.data.icons.length || index < 0) throw new Error("Item out of range");
+        if(!name) throw new Error("Name needs to be defined");
+        if(chest.data.icons.find((_,i)=>_.slot == slot && i != index)) throw new Error("There is already an icon at this slot");
+        chest.data.icons[index] = ({
+            row,
+            col,
+            iconID,
+            name,
+            lore,
+            amount: itemStackAmount
+        })
+        this.db.overwriteDataByID(chest.id, chest.data);
+    }
+}
+
+export default new ChestUIBuilder();
