@@ -9,5 +9,8 @@ export default {
     uiNames: {
         UIBuilderRoot: "Leaf/UIBuilder/Root",
         UIBuilderAdd: "Leaf/UIBuilder/Add",
+        UIBuilderEdit: "Leaf/UIBuilder/Edit",
+        UIBuilderEditButtons: "Leaf/UIBuilder/EditButtons",
+        UIBuilderAddButton: "Leaf/UIBuilder/AddButton"
     }
 }

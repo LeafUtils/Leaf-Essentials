@@ -3,6 +3,11 @@ import uiManager from './uiManager';
 import config from './config';
 import './uis/uiBuilder/root';
 import './uis/uiBuilder/add';
+import './uis/uiBuilder/edit';
+import './uis/uiBuilder/editButtons';
+import icons from './api/icons';
+import azaleaIconPack from './icon_packs/azalea';
+icons.install(azaleaIconPack)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
     if(
         e.id == config.scripteventNames.openDefault &&
