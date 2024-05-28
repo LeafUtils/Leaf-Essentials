@@ -15,14 +15,22 @@ function MergeRecursive(obj1, obj2) {
     }
     return obj1;
 }
+let nonPersistentData = {};
 class PrismarineDBTable {
-    constructor(tableName = "default", entity) {
+    constructor(tableName = "default", entity, nonPersistent = false) {
         this.entity = entity;
         this.table = tableName;
+        this.nonPersistent = nonPersistent;
         this.data = [];
         this.load();
     }
     load() {
+        if(this.nonPersistent) {
+            if(nonPersistentData[this.table]) {
+                this.data = nonPersistentData[this.table];
+            }
+            return;
+        }
         let storageBase = this.entity ? this.entity : world;
         let val = ``
         try {
@@ -36,6 +44,10 @@ class PrismarineDBTable {
         }
     }
     save() {
+        if(this.nonPersistent) {
+            nonPersistentData[this.table] = this.data;
+            return;
+        }
         let storageBase = this.entity ? this.entity : world;
         storageBase.setDynamicProperty(`prismarine:${this.table}`, JSON.stringify(this.data));
     }
@@ -152,10 +164,13 @@ class PrismarineDBTable {
 
 class PrismarineDB {
     table(name) {
-        return new PrismarineDBTable(name, null);
+        return new PrismarineDBTable(name, null, false);
     }
     entityTable(name, entity) {
-        return new PrismarineDBTable(name, entity);
+        return new PrismarineDBTable(name, entity, false);
+    }
+    nonPersistentTable(name) {
+        return new PrismarineDBTable(name, null, true);
     }
 }
 

@@ -1,12 +1,15 @@
-import { system, ScriptEventSource } from '@minecraft/server';
+import { world, system, ScriptEventSource } from '@minecraft/server';
 import uiManager from './uiManager';
 import config from './config';
 import './uis/uiBuilder/root';
 import './uis/uiBuilder/add';
 import './uis/uiBuilder/edit';
 import './uis/uiBuilder/editButtons';
+import './commands/help';
+import './commands/uisList';
 import icons from './api/icons';
 import azaleaIconPack from './icon_packs/azalea';
+import commandManager from './api/commands/commandManager';
 icons.install(azaleaIconPack)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
     if(
@@ -15,6 +18,12 @@ system.afterEvents.scriptEventReceive.subscribe(e=>{
         e.sourceEntity.typeId == "minecraft:player"
     ) {
         uiManager.open(e.sourceEntity, e.message)
+    }
+})
+world.beforeEvents.chatSend.subscribe(e=>{
+    if(e.message.startsWith('!')) {
+        e.cancel = true;
+        commandManager.run(e)
     }
 })
 // let id = uiBuilder.createUI("test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "normal", "test");
