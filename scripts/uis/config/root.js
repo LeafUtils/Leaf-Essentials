@@ -5,7 +5,10 @@ import uiManager from "../../uiManager";
 
 uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
     let actionForm = new ActionForm();
-    actionForm.button(`§2Leaf Settings\n§r§7Common settings`, icons.resolve("Packs/Asteroid/jungle_leaves"))
+    actionForm.button(`§2Leaf Settings\n§r§7Common settings`, icons.resolve("Packs/Asteroid/jungle_leaves"), (player)=>{
+        player.sendMessage(`§cThis feature is coming soon`);
+        uiManager.open(player, config.uiNames.ConfigRoot)
+    })
     actionForm.button(`§cUI Builder\n§r§7Make UIs easily!`, icons.resolve("Packs/Asteroid/ui"), (player)=>{
         uiManager.open(player, config.uiNames.UIBuilderRoot)
     })
