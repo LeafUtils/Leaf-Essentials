@@ -10,9 +10,12 @@ import './uis/uiBuilder/editButton';
 import './uis/config/root'
 import './commands/help';
 import './commands/uisList';
+import './uis/chests/root';
+import './uis/chests/add';
 import icons from './api/icons';
 import azaleaIconPack from './icon_packs/azalea';
 import commandManager from './api/commands/commandManager';
+import chestUIBuilder from './api/chest/chestUIBuilder';
 icons.install(azaleaIconPack, true)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
     if(
@@ -34,6 +37,8 @@ world.afterEvents.itemUse.subscribe(e=>{
         uiManager.open(e.source, config.uiNames.ConfigRoot)
     }
 })
+let id = chestUIBuilder.createChestGUI("test", "test", 3);
+chestUIBuilder.addIconToChestGUI(id, 2, 5, "apple", "test", ["hello","world"], 2, "/say hi");
 // let id = uiBuilder.createUI("test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "normal", "test");
 // uiBuilder.addButtonToUI(
 //     id,

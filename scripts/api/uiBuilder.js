@@ -14,7 +14,7 @@ class UIBuilder {
         system.afterEvents.scriptEventReceive.subscribe(e=>{
             if(e.sourceType == ScriptEventSource.Entity && e.id == config.scripteventNames.open) {
                 let ui = this.db.findFirst({scriptevent: e.message});
-                this.open(ui.id, e.sourceEntity);
+                if(ui) this.open(ui.id, e.sourceEntity);
             }
         })
     }
