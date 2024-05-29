@@ -7,7 +7,6 @@ import { system, ScriptEventSource } from '@minecraft/server';
 class ChestUIBuilder {
     constructor() {
         this.db = prismarineDb.table("Chests");
-        this.db.clear();
         this.validRows = [1, 2, 3, 4, 5, 6];
         system.afterEvents.scriptEventReceive.subscribe(e=>{
             if(e.sourceType == ScriptEventSource.Entity && e.id == config.scripteventNames.open) {
