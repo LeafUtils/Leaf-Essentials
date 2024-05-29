@@ -16,6 +16,10 @@ export default {
         ConfigRoot: "Leaf/Config/Root",
         ChestGuiRoot: "Leaf/ChestGUIs/Root",
         ChestGuiAdd: "Leaf/ChestGUIs/Add",
+        ChestGuiEdit: "Leaf/ChestGUIs/Edit",
+        ChestGuiEditItems: "Leaf/ChestGUIs/EditItems",
+        ChestGuiEditItem: "Leaf/ChestGUIs/EditItem",
+        ChestGuiAddItem: "Leaf/ChestGUIs/AddItem"
     },
     items: {
         LeafConfig: "leaf:config_ui"

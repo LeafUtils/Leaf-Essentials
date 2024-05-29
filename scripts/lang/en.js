@@ -17,5 +17,13 @@ export default {
         errors: {
             notfound: "Command not found."
         }
+    },
+    chestguis: {
+        additem: "Add an item",
+        additemlore: {
+            line1: "To add an §bitem§r, click this",
+            line2: "If you §cdo not §runderstand how this works",
+            line3: "Go to the documentation at §2https://leaf.trashdev.org/"
+        }
     }
 }

@@ -19,7 +19,7 @@ uiManager.addUI(config.uiNames.ChestGuiRoot, "Chest GUI Root", (player)=>{
     })
     for(const chest of chests) {
         form.button(`§6${chest.data.title}\n§r§7${chest.data.rows} ${chest.data.rows > 1 ? "rows" : "row"}`, icons.resolve(icons2.get(chest.data.rows)), (player)=>{
-
+            uiManager.open(player, config.uiNames.ChestGuiEdit, chest.id);
         });
     }
     form.show(player, false, ()=>{})
