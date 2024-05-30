@@ -1,3 +1,4 @@
+// PrismarineDB Version: 2.0
 import { world } from '@minecraft/server';
 function MergeRecursive(obj1, obj2) {
     for (var p in obj2) {
@@ -17,39 +18,18 @@ function MergeRecursive(obj1, obj2) {
 }
 let nonPersistentData = {};
 class PrismarineDBTable {
-    constructor(tableName = "default", entity, nonPersistent = false) {
-        this.entity = entity;
+    #storage;
+    constructor(tableName = "default", storage) {
+        this.#storage = storage;
         this.table = tableName;
-        this.nonPersistent = nonPersistent;
         this.data = [];
         this.load();
     }
     load() {
-        if(this.nonPersistent) {
-            if(nonPersistentData[this.table]) {
-                this.data = nonPersistentData[this.table];
-            }
-            return;
-        }
-        let storageBase = this.entity ? this.entity : world;
-        let val = ``
-        try {
-            val = storageBase.getDynamicProperty(`prismarine:${this.table}`)
-        } catch { val = `` }
-        if(!val) val = `[]`;
-        try {
-            this.data = JSON.parse(val);
-        } catch {
-            this.data = [];
-        }
+        this.data = this.#storage.load(this.table);
     }
     save() {
-        if(this.nonPersistent) {
-            nonPersistentData[this.table] = this.data;
-            return;
-        }
-        let storageBase = this.entity ? this.entity : world;
-        storageBase.setDynamicProperty(`prismarine:${this.table}`, JSON.stringify(this.data));
+        this.#storage.save(this.table, this.data);
     }
 
     clear() {
@@ -160,17 +140,144 @@ class PrismarineDBTable {
         if(docIndex < 0) return null;
         return this.data[docIndex];
     }
-}
 
+    createKeyValDocument(id) {
+        if(this.findFirst({__keyval_id: id})) return;
+        return this.insertDocument({
+            type: "__keyval__",
+            __keyval_data: {},
+            __keyval_id: id
+        });
+    }
+
+    keyval(id) {
+        let doc = this.findFirst({__keyval_id: id});
+        let docID = null;
+        if(!doc) {
+            docID = this.createKeyValDocument(id);
+        } else {
+            docID = doc.id;
+        }
+        return this.#keyval(docID);
+    }
+    #keyval(id) {
+        const get = (key)=> {
+            this.load();
+            let doc = this.getByID(id);
+            return doc.data.__keyval_data[key] ? doc.data.__keyval_data[key].data : null;
+        }
+        const set = (key, val)=> {
+            this.load();
+            let doc = this.getByID(id);
+            let currentValue = doc.data.__keyval_data[key] ? doc.data.__keyval_data[key].data : null;
+            let newValue = {};
+            if(currentValue && currentValue.createdAt) {
+                newValue.createdAt = currentValue.createdAt;
+            } else {
+                newValue.createdAt = Date.now();
+            }
+            newValue.updatedAt = Date.now();
+            newValue.data = val;
+            doc.data.__keyval_data[key] = newValue;
+            this.overwriteDataByID(doc.id, doc.data);
+        }
+        const del = (key)=> {
+            this.load();
+            let doc = this.getByID(id);
+            if(doc.data.__keyval_data[key]) delete doc.data.__keyval_data[key];
+        }
+        const has = (key)=> {
+            this.load();
+            let doc = this.getByID(id);
+            if(doc.data.__keyval_data[key]) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return {get, set, delete: del, has};
+    }
+}
+class NonPersistentStorage {
+    load(table) {
+        return nonPersistentData[table] ? nonPersistentData[table] : [];
+    }
+    save(table, data) {
+        nonPersistentData[table] = data;
+    }
+}
+class WorldPersistentStorage {
+    load(table) {
+        let val = ``
+        try {
+            val = world.getDynamicProperty(`prismarine:${table}`)
+        } catch { val = `` }
+        if(!val) val = `[]`;
+        let data = [];
+        try {
+            data = JSON.parse(val);
+        } catch {
+            data = [];
+        }
+        return data
+    }
+    save(table, data) {
+        world.setDynamicProperty(`prismarine:${table}`, JSON.stringify(data));
+    }
+}
+class EntityPersistentStorage {
+    #entity;
+    constructor(entity) {
+        this.#entity = entity;
+    }
+    load(table) {
+        let val = ``
+        try {
+            val = this.#entity.getDynamicProperty(`prismarine:${table}`)
+        } catch { val = `` }
+        if(!val) val = `[]`;
+        let data = [];
+        try {
+            data = JSON.parse(val);
+        } catch {
+            data = [];
+        }
+        return data
+    }
+    save(table, data) {
+        this.#entity.setDynamicProperty(`prismarine:${table}`, JSON.stringify(data));
+    }
+}
 class PrismarineDB {
     table(name) {
-        return new PrismarineDBTable(name, null, false);
+        return new PrismarineDBTable(name, new WorldPersistentStorage());
     }
     entityTable(name, entity) {
-        return new PrismarineDBTable(name, entity, false);
+        return new PrismarineDBTable(name, new EntityPersistentStorage(entity));
     }
     nonPersistentTable(name) {
-        return new PrismarineDBTable(name, null, true);
+        return new PrismarineDBTable(name, new NonPersistentStorage());
+    }
+    customStorage(name, Storage, ...params) {
+        return new PrismarineDB(name, new Storage(...params));
+    }
+    #getStorage(storage) {
+        if(typeof storage === "string") {
+            switch(storage) {
+                case "entity":
+                    return EntityPersistentStorage;
+                case "world":
+                    return WorldPersistentStorage;
+            }
+        }
+        return storage;
+    }
+    convertBetweenStorageTypes(table, config1, config2) {
+        let db1 = new PrismarineDBTable(table, new this.#getStorage(config1.storage, ...(config1.params ? config1.params : [])));
+        db1.load();
+        let db2 = new PrismarineDBTable(table, new this.#getStorage(config2.storage, ...(config2.params ? config2.params : [])));
+        db2.data = db1.data;
+        db2.save();
     }
 }
 
