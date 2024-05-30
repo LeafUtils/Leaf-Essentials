@@ -20,6 +20,7 @@ import icons from './api/icons';
 import azaleaIconPack from './icon_packs/azalea';
 import commandManager from './api/commands/commandManager';
 import chestUIBuilder from './api/chest/chestUIBuilder';
+import { formatStr } from './api/azaleaFormatting';
 icons.install(azaleaIconPack, true)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
     if(
