@@ -259,7 +259,7 @@ class PrismarineDB {
         return new PrismarineDBTable(name, new NonPersistentStorage());
     }
     customStorage(name, Storage, ...params) {
-        return new PrismarineDB(name, new Storage(...params));
+        return new PrismarineDBTable(name, new Storage(...params));
     }
     #getStorage(storage) {
         if(typeof storage === "string") {
