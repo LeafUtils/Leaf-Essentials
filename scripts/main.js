@@ -21,6 +21,8 @@ import azaleaIconPack from './icon_packs/azalea';
 import commandManager from './api/commands/commandManager';
 import chestUIBuilder from './api/chest/chestUIBuilder';
 import { formatStr } from './api/azaleaFormatting';
+import playerStorage from './api/playerStorage';
+// world.sendMessage(performance.now())
 icons.install(azaleaIconPack, true)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
     if(
@@ -42,6 +44,15 @@ world.afterEvents.itemUse.subscribe(e=>{
         uiManager.open(e.source, config.uiNames.ConfigRoot)
     }
 })
+// THE ONLY TICK EVENT THAT IS ALLOWED. DO NOT ADD MORE
+let ticks = 0;
+system.runInterval(()=>{
+    ticks++;
+    if(ticks % 20 == 0) {
+        for(const player of world.getPlayers()) playerStorage.saveData(player);
+    }
+},1);
+
 // let id = chestUIBuilder.createChestGUI("test", "test", 3);
 // chestUIBuilder.addIconToChestGUI(id, 2, 5, "apple", "test", ["hello","world"], 2, "/say hi");
 // let id = uiBuilder.createUI("test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "normal", "test");

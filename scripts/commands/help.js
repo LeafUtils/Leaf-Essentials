@@ -1,4 +1,5 @@
 import commandManager from "../api/commands/commandManager";
+import playerStorage from "../api/playerStorage";
 
 commandManager.addCommand("help", {description: "Get help with Leaf Essentials", category: "Help"}, ({msg,args})=>{
     let commands = commandManager.cmds.findDocuments(null);
@@ -26,4 +27,7 @@ commandManager.addCommand("help", {description: "Get help with Leaf Essentials",
 
 commandManager.addSubcommand("help", "setup", {description: "Get help setting up Leaf Essentials"}, ({msg})=>{
     msg.sender.sendMessage("WIP")
+})
+commandManager.addSubcommand("help", "my-id", {description: "Get your player ID"}, ({msg})=>{
+    msg.sender.sendMessage(playerStorage.getID(msg.sender))
 })
