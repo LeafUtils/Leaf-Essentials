@@ -1,6 +1,7 @@
 import { prismarineDb } from '../lib/prismarinedb';
 import { array_move } from './utils/array_move';
 import { formatStr } from './azaleaFormatting';
+import { system } from '@minecraft/server';
 const generateUUID = () => {
     let
       d = new Date().getTime(),
@@ -17,6 +18,10 @@ const generateUUID = () => {
       return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
     });
 };
+let animationIndex = 0;
+system.runInterval(()=>{
+    animationIndex++;
+},10);
 class SidebarEditor {
     constructor() {
         this.db = prismarineDb.table("sidebars");
@@ -46,7 +51,7 @@ class SidebarEditor {
             _type: "SIDEBAR",
             _name: name
         });
-        if(!doc) return;
+        if(!doc) return [];
         return doc.data.lines;
     }
     getLineByID(name, id) {
@@ -60,7 +65,21 @@ class SidebarEditor {
     parseEntireSidebar(player, name) {
         let lines = this.getLines(name);
         if(!lines) return "";
-        return formatStr(lines, player);
+        let newLines = lines.map(_=>{
+            let frames = _.text.split('\n').filter(_=>_ ? true : false);
+            return frames[animationIndex % frames.length]
+        })
+        let text = [];
+        for(const line of newLines) {
+            text.push(formatStr(line, player));
+        }
+        return text.join('\n§r');
+    }
+    parseLine(player, lineText) {
+        return formatStr([lineText].map(_=>{
+            let frames = _.split('\n').filter(_=>_ ? true : false);
+            return frames[animationIndex % frames.length]
+        }).join(''), player);
     }
     duplicateSidebar(name, newName) {
         let doc = this.db.findFirst({
@@ -79,7 +98,7 @@ class SidebarEditor {
         })
     }
     getSidebarNames() {
-        return this.db.findDocuments({_type:"SIDEBAR"}).map(_=>_._name);
+        return this.db.findDocuments({_type:"SIDEBAR"}).map(_=>_.data._name);
     }
     addLine(name, text) {
         let doc = this.db.findFirst({
@@ -99,8 +118,23 @@ class SidebarEditor {
             _name: name
         })
         if(!doc) return;
-        doc.data.lines = doc.data.lines.filter(_=>_.id != id);
+        doc.data.lines = doc.data.lines.filter(_=>_.id == id);
         this.db.overwriteDataByID(doc.id, doc.data);
+    }
+    editLine(name, id, text) {
+        let doc = this.db.findFirst({
+            _type: "SIDEBAR",
+            _name: name
+        })
+        if(!doc) return;
+        let index = doc.data.lines.findIndex(_=>_.id == id);
+        if(index < 0) return;
+        doc.data.lines[index] = {
+            id,
+            text
+        };
+        this.db.overwriteDataByID(doc.id, doc.data);
+
     }
     moveLineUp(name, id) {
         let doc = this.db.findFirst({
