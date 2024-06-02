@@ -5,10 +5,10 @@ import { ActionForm } from "../../lib/form_func";
 import icons from "../../api/icons";
 uiManager.addUI(config.uiNames.SidebarEditorRoot, "Sidebar editor root", (player)=>{
     let form = new ActionForm();
-    form.button("Settings", `textures/azalea_icons/Settings`, (player)=>{
+    form.button("§bSettings\n§r§7Edit sidebar settings", `textures/azalea_icons/Settings`, (player)=>{
         uiManager.open(player, config.uiNames.SidebarEditorSettings);
     });
-    form.button("Create a sidebar", `textures/azalea_icons/1`, (player)=>{
+    form.button("§aCreate a sidebar\n§r§7Creates a new sidebar", `textures/azalea_icons/1`, (player)=>{
         uiManager.open(player, config.uiNames.SidebarEditorAdd)
     });
     for(const sidebar of sidebarEditor.getSidebarNames()) {

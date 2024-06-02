@@ -28,7 +28,6 @@ class SidebarEditor {
     }
     createSidebar(name) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         })
         if(doc) return;
@@ -40,7 +39,6 @@ class SidebarEditor {
     }
     deleteSidebar(name) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         });
         if(!doc) return;
@@ -48,7 +46,6 @@ class SidebarEditor {
     }
     getLines(name) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         });
         if(!doc) return [];
@@ -56,7 +53,6 @@ class SidebarEditor {
     }
     getLineByID(name, id) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         });
         if(!doc) return;
@@ -83,12 +79,10 @@ class SidebarEditor {
     }
     duplicateSidebar(name, newName) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         });
         if(!doc) return;
         let doc2 = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: newName
         })
         if(doc2) return;
@@ -102,7 +96,6 @@ class SidebarEditor {
     }
     addLine(name, text) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         })
         if(!doc) return;
@@ -114,7 +107,6 @@ class SidebarEditor {
     }
     removeLine(name, id) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         })
         if(!doc) return;
@@ -123,7 +115,6 @@ class SidebarEditor {
     }
     editLine(name, id, text) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         })
         if(!doc) return;
@@ -136,9 +127,8 @@ class SidebarEditor {
         this.db.overwriteDataByID(doc.id, doc.data);
 
     }
-    moveLineUp(name, id) {
+    moveLineDown(name, id) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         })
         if(!doc) return;
@@ -147,9 +137,8 @@ class SidebarEditor {
         array_move(doc.data.lines, index, index - 1);
         this.db.overwriteDataByID(doc.id, doc.data);
     }
-    moveLineDown(name, id) {
+    moveLineUp(name, id) {
         let doc = this.db.findFirst({
-            _type: "SIDEBAR",
             _name: name
         })
         if(!doc) return;
