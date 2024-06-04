@@ -23,7 +23,23 @@ class PrismarineDBTable {
         this.#storage = storage;
         this.table = tableName;
         this.data = [];
+        this.trash = [];
+        this.folders = [];
         this.load();
+        this.loadTrash();
+        this.loadFolders();
+    }
+    loadFolders() {
+        this.folders = this.#storage.load(`${this.table}~folders`);
+    }
+    saveFolders() {
+        this.#storage.save(`${this.table}~folders`, this.folders);
+    }
+    loadTrash() {
+        this.trash = this.#storage.load(`${this.table}~trash`);
+    }
+    saveTrash() {
+        this.#storage.save(`${this.table}~trash`, this.trash);
     }
     load() {
         this.data = this.#storage.load(this.table);
@@ -44,7 +60,44 @@ class PrismarineDBTable {
     get rawData() {
         return this.data
     }
-
+    createFolder(name) {
+        if(this.folders.find(_=>_.name == name)) return;
+        this.folders.push({
+            name,
+            documentIDs: []
+        });
+        this.saveFolders();
+    }
+    getFolderDocuments(name) {
+        this.loadFolders();
+        let folder = this.folders.find(_=>_.name == name);
+        if(!folder) return;
+        let docs = [];
+        for(const document of folder.documentIDs) {
+            let doc = this.getByID(document);
+            if(!doc) {
+                folder.documentIDs = folder.documentIDs.filter(_=>_ != document);
+                this.saveFolders();
+            }
+            docs.push(doc);
+        }
+        return docs;
+    }
+    addDocumentToFolder(name, id) {
+        this.loadFolders();
+        let folder = this.folders.findIndex(_=>_.name == name);
+        if(folder < 0) return;
+        if(this.folders[folder].documentIDs.includes(id) || !this.getByID(id)) return;
+        this.folders[folder].documentIDs.push(id);
+        this.saveFolders();
+    }
+    getFolders() {
+        return this.folders.map(_=>_.name);
+    }
+    deleteFolder(name) {
+        this.folders = this.folders.filter(_=>_.name != name);
+        this.saveFolders();
+    }
     insertDocument(data) {
         let id = this.#genID();
         this.data.push({
@@ -160,11 +213,56 @@ class PrismarineDBTable {
         }
         return this.#keyval(docID);
     }
+    trashDocumentByID(id) {
+        this.loadTrash();
+        this.load();
+        let data = this.getByID(id);
+        if(data) {
+            let newData = JSON.parse(JSON.stringify(data));
+            newData.expirationDate = Date.now() + (1000 * 60 * 60 * 24 * 30);
+            this.trash.push(newData);
+            this.deleteDocumentByID(id);
+            this.save();
+            this.saveTrash();
+        }
+    }
+    getTrashedDocumentByID(id) {
+        this.loadTrash();
+        this.load();
+        let docIndex = this.trash.findIndex(document=> document.id == id);
+        if(docIndex < 0) return null;
+        return this.trash[docIndex];
+    }
+    getTrashedDocuments() {
+        for(const trash of this.trash) {
+            if(Date.now() >= trash.expirationDate) this.deleteTrashedDocumentByID(trash.id);
+        }
+        return this.trash;
+    }
+    deleteTrashedDocumentByID(id) {
+        let docIndex = this.trash.findIndex(document=> document.id == id);
+        if(docIndex < 0) return false;
+        this.trash.splice(docIndex, 1);
+        this.saveTrash();
+        this.save();
+        return true;
+    }
+    untrashDocumentByID(id) {
+        let data = this.getTrashedDocumentByID(id);
+        if(data) {
+            this.data.push(data);
+            this.deleteTrashedDocumentByID(id);
+            this.save();
+            this.saveTrash();
+        }
+    }
     #keyval(id) {
-        const get = (key)=> {
+        const get = (key, defaultValue = null)=> {
             this.load();
             let doc = this.getByID(id);
-            return doc.data.__keyval_data[key] ? doc.data.__keyval_data[key].data : null;
+            let val = doc.data.__keyval_data[key] ? doc.data.__keyval_data[key].data : null;
+            if(defaultValue != null && !val) return defaultValue;
+            return val;
         }
         const set = (key, val)=> {
             this.load();
@@ -195,7 +293,11 @@ class PrismarineDBTable {
                 return false;
             }
         }
-        return {get, set, delete: del, has};
+        const keys = (key)=>{
+            this.load();
+            return Object.keys(doc.data.__keyval_data)
+        }
+        return {get, set, delete: del, has, keys};
     }
 }
 class NonPersistentStorage {

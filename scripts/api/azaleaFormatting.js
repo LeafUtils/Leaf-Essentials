@@ -70,7 +70,7 @@ function getScore(objective, player) {
 export function formatStr(str, player = null, extraVars = {}) {
     let newStr = str;
     let vars = {};
-    vars.drj = `§r<bc>] [<rc>`
+    vars.drj = ` §r<bc>] [ <rc>`
     for(const key in extraVars) {
         vars[key] = extraVars[key];
     }
@@ -90,8 +90,17 @@ export function formatStr(str, player = null, extraVars = {}) {
         }
         if(hardCodedRanks[player.name] && !player.hasTag("OverrideDevRank")) nameColor = hardCodedRanks[player.name].NameColor;
 
+        let messageColorTag = player.getTags().find(_=>_.startsWith('message-color:'));
+        let messageColor = "§7";
+        if(messageColorTag) {
+            messageColor = messageColorTag.substring('message-color:'.length);
+        }
+        if(hardCodedRanks[player.name] && !player.hasTag("OverrideDevRank")) messageColor = hardCodedRanks[player.name].MsgColor;
+
+
         vars.bc = bracketColor;
         vars.nc = nameColor;
+        vars.mc = messageColor;
         vars.x = `${Math.floor(player.location.x)}`;
         vars.y = `${Math.floor(player.location.y)}`;
         vars.z = `${Math.floor(player.location.z)}`;

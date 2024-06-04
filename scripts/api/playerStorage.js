@@ -99,6 +99,17 @@ class PlayerStorage {
             location: {x: player.location.x, y:player.location.y, z: player.location.z}
         })
     }
+    parseName(name) {
+        return name.toLowerCase().replace(/ /g,"").replace(/_/g,"");
+    }
+    searchPlayersByName(name) {
+        let ids = [];
+        for(const key of this.keyval.keys()) {
+            let data = this.keyval.get(key);
+            if(this.parseName(data.name).includes(this.parseName(name))) ids.push(key);
+        }
+        return ids;
+    }
     getPlayerByID(id) {
         return this.keyval.get(id);
     }

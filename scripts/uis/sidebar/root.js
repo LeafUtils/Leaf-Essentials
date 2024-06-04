@@ -16,6 +16,9 @@ uiManager.addUI(config.uiNames.SidebarEditorRoot, "Sidebar editor root", (player
             uiManager.open(player, config.uiNames.SidebarEditorEdit, sidebar);
         });
     }
+    form.button("§bTrash\n§7View deleted sidebars", icons.resolve("Packs/Asteroid/garbage"), (player)=>{
+        uiManager.open(player, config.uiNames.SidebarEditorTrash);
+    })
     form.show(player, false, (player, response)=>{
 
     })

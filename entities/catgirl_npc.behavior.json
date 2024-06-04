@@ -1,0 +1,72 @@
+{
+	"format_version": "1.16.100",
+	"minecraft:entity": {
+		"description": {
+			"identifier": "leaf:catgirl_npc",
+			"is_spawnable": true,
+			"is_summonable": true,
+			"is_experimental": false
+		},
+		"components": {
+			"minecraft:pushable": {
+				"is_pushable": false
+			},
+			"minecraft:push_through": {
+				"value": 1
+			},
+            "minecraft:damage_sensor": {
+                "triggers": {
+                  "cause": "all",
+                  "deals_damage": false
+                }
+              },
+              "minecraft:type_family": {
+                "family": [ "npc", "mob" ]
+              },
+              "minecraft:fire_immune": true,
+              "minecraft:movement": {
+                "value": 0.5
+              },
+              "minecraft:loot": {
+                "table": "loot_tables/empty.json"
+              },
+              "minecraft:collision_box": {
+                "width": 0.6,
+                "height": 2.1
+              },
+              "minecraft:behavior.look_at_player": {
+                "priority": 0,
+                "look_distance": 6.0,
+                "probability": 0.02
+              },
+              "minecraft:persistent": {
+              },
+              "minecraft:npc": {
+                "npc_data": {
+                    "skin_list": [
+                        {
+                          "variant": 0
+                        },
+                        {
+                          "variant": 1
+                        },
+                        {
+                            "variant": 2
+                        },
+                        {
+                            "variant": 3
+                        },
+                        {
+                            "variant": 4
+                        }
+                    ]    
+                }
+              },
+              "minecraft:nameable": {
+                "always_show": false,
+                "allow_name_tag_renaming": false
+              },
+              "minecraft:physics": {}
+		}
+	}
+}

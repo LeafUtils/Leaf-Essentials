@@ -25,7 +25,9 @@ export default {
         SidebarEditorSettings: "Leaf/Sidebar/Settings",
         SidebarEditorEdit: "Leaf/Sidebar/Edit",
         SidebarEditorAddLine: "Leaf/Sidebar/AddLine",
-        SidebarEditorEditLine: "Leaf/Sidebar/EditLine"
+        SidebarEditorEditLine: "Leaf/Sidebar/EditLine",
+        SidebarEditorTrash: "Leaf/Sidebar/Trash",
+        SidebarEditorTrashEdit: "Leaf/Sidebar/TrashEdit"
     },
     items: {
         LeafConfig: "leaf:config_ui"

@@ -42,7 +42,7 @@ class SidebarEditor {
             _name: name
         });
         if(!doc) return;
-        this.db.deleteDocumentByID(doc.id);
+        this.db.trashDocumentByID(doc.id);
     }
     getLines(name) {
         let doc = this.db.findFirst({

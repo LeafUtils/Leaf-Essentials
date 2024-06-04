@@ -1,0 +1,22 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "leaf:catgirl_npc",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"default": "textures/entity/catgirl_npc"
+			},
+			"geometry": {
+				"default": "geometry.catgirl_npc"
+			},
+			"render_controllers": ["controller.render.default"],
+			"spawn_egg": {
+				"base_color": "#ffd204",
+				"overlay_color": "#f37569"
+			}
+		}
+	}
+}

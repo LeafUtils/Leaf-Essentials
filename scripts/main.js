@@ -1,4 +1,4 @@
-import { world, system, ScriptEventSource } from '@minecraft/server';
+import { world, system, ScriptEventSource, Player } from '@minecraft/server';
 import uiManager from './uiManager';
 import config from './config';
 import './uis/uiBuilder/root';
@@ -22,13 +22,18 @@ import './uis/sidebar/settings';
 import './uis/sidebar/edit';
 import './uis/sidebar/addLine';
 import './uis/sidebar/editLine';
-import './api/sidebarDisplay'
+import './api/sidebarDisplay';
+import './uis/sidebar/trash';
+import './uis/sidebar/trashEdit';
+import './crates/main';
+import './features/chestLocking'
 import icons from './api/icons';
 import azaleaIconPack from './icon_packs/azalea';
 import commandManager from './api/commands/commandManager';
 import chestUIBuilder from './api/chest/chestUIBuilder';
 import { formatStr } from './api/azaleaFormatting';
 import playerStorage from './api/playerStorage';
+import { generalConfig } from './configs';
 // world.sendMessage(performance.now())
 icons.install(azaleaIconPack, true)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
@@ -44,6 +49,21 @@ world.beforeEvents.chatSend.subscribe(e=>{
     if(e.message.startsWith('!')) {
         e.cancel = true;
         commandManager.run(e)
+        return;
+    }
+    if(generalConfig.get("ChatRanks") ? true : false) {
+        e.cancel = true;
+        world.sendMessage(
+            formatStr(
+                // `{{has_tag staffchat "<bc>[<nc>StaffChat<bc>] " "<bl>"}}§r<bc>[<rc>{{rank_joiner "<drj>"}}§r<bc>] §r<nc><name> §r<bc><dra> §r<mc><msg>`,
+                `{{has_tag staffchat "<bc>[<nc> StaffChat §r<bc>] " "<bl>"}}§r<bc>[ <rc>{{rank_joiner "<drj>"}}§r<bc> ] §r<nc><name> §r§l<bc><dra> §r<mc><msg>`,
+                e.sender,
+                {
+                    msg: e.message,
+                    rc: "§7"
+                }
+            )
+        )
     }
 })
 world.afterEvents.itemUse.subscribe(e=>{
