@@ -27,7 +27,7 @@ class UIBuilder {
             scriptevent
         })
     }
-    addButtonToUI(id, text, subtext = null, action = "", iconID = "") {
+    addButtonToUI(id, text, subtext = null, action = "", iconID = "", requiredTag) {
         let doc = this.db.getByID(id);
         if(!doc) return;
         if(doc.data.type != 0) return;
@@ -35,7 +35,8 @@ class UIBuilder {
             text,
             subtext,
             action,
-            iconID
+            iconID,
+            requiredTag
         });
         this.db.overwriteDataByID(id, doc.data);
     }

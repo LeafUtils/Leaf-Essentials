@@ -9,6 +9,7 @@ uiManager.addUI(config.uiNames.UIBuilderAddButton, "Add a button", (player, id, 
     form.textField("Subtext", "Subtext on the button", defaultSubtext);
     form.textField("Action§c*", "Example: /say hi", defaultAction);
     form.textField("Icon", "Example: vanilla/iron_sword", defaultIcon);
+    form.textField("Required Tag", "yes", defaultIcon);
     form.show(player, false, (player, response)=>{
         if(response.canceled) return;
         if(!response.formValues[0]) return uiManager.open(player, config.uiNames.UIBuilderAddButton, id, response.formValues[0], response.formValues[1], response.formValues[2], response.formValues[3], "Text is required", index);
@@ -19,11 +20,12 @@ uiManager.addUI(config.uiNames.UIBuilderAddButton, "Add a button", (player, id, 
             ui.data.buttons[index].subtext = response.formValues[1];
             ui.data.buttons[index].action = response.formValues[2];
             ui.data.buttons[index].iconID = response.formValues[3];
+            ui.data.buttons[index].requiredTag = response.formValues[4];
             uiBuilder.db.overwriteDataByID(id, ui.data)
             uiManager.open(player, config.uiNames.UIBuilderEditButtons, id);
             return;
         }
-        uiBuilder.addButtonToUI(id, response.formValues[0], response.formValues[1], response.formValues[2], response.formValues[3]);
+        uiBuilder.addButtonToUI(id, response.formValues[0], response.formValues[1], response.formValues[2], response.formValues[3], response.formValues[4]);
         uiManager.open(player, config.uiNames.UIBuilderEditButtons, id);
     })
 })

@@ -14,6 +14,7 @@ export default {
         UIBuilderAddButton: "Leaf/UIBuilder/AddButton",
         UIBuilderEditButton: "Leaf/UIBuilder/EditButton",
         ConfigRoot: "Leaf/Config/Root",
+        ConfigMain: "Leaf/Config/Main",
         ChestGuiRoot: "Leaf/ChestGUIs/Root",
         ChestGuiAdd: "Leaf/ChestGUIs/Add",
         ChestGuiEdit: "Leaf/ChestGUIs/Edit",
@@ -27,7 +28,11 @@ export default {
         SidebarEditorAddLine: "Leaf/Sidebar/AddLine",
         SidebarEditorEditLine: "Leaf/Sidebar/EditLine",
         SidebarEditorTrash: "Leaf/Sidebar/Trash",
-        SidebarEditorTrashEdit: "Leaf/Sidebar/TrashEdit"
+        SidebarEditorTrashEdit: "Leaf/Sidebar/TrashEdit",
+        BlockEditor: "Leaf/BlockEditor",
+        EntityEditor: "Leaf/EntityEditor",
+        CurrencyEditor: "Leaf/CurrencyEditor/Root",
+        CurrencyEditorAdd: "Leaf/CurrencyEditor/Add",
     },
     items: {
         LeafConfig: "leaf:config_ui"

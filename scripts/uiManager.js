@@ -1,13 +1,27 @@
+import { functionStore } from "./lib/prismarinedb";
+
 class UIManager {
+    #store
+    #descriptions
     constructor() {
-        this.uis = [];
+        this.#store = functionStore.getStore("uis");
+        this.#descriptions = new Map();
+    }
+    get uis() {
+        return [...this.#store.getList()].map(_=>{
+            return {
+                id: _,
+                ui: function(){},
+                desc: this.#descriptions.get(_)
+            }
+        });
     }
     addUI(id, desc, ui) {
-        this.uis.push({id, ui, desc});
+        this.#descriptions.set(id, desc ? desc : "No Description");
+        this.#store.add(id, ui)
     }
     open(player, id, ...data) {
-        let ui = this.uis.find(_=>_.id == id)
-        if(ui) ui.ui(player, ...data);
+        this.#store.call(id, player, ...data);
     }
 }
 export default new UIManager();

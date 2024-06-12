@@ -41,9 +41,9 @@ class Permissions {
     hasPermission(player, permission) {
         let perms = [];
         for(const role of this.db.findDocuments(null)) {
-            if(player.hasTag(role.tag)) {
-                if(role.isAdmin) return true;
-                perms = [...perms, ...role.permissions];
+            if(player.hasTag(role.data.tag)) {
+                if(role.data.isAdmin) return true;
+                perms = [...perms, ...role.data.permissions];
             }
         }
         return perms.includes(permission);
@@ -75,3 +75,5 @@ class Permissions {
         this.db.overwriteDataByID(doc.id, doc.data);
     }
 }
+
+export default new Permissions();

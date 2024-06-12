@@ -1,5 +1,5 @@
 import { world, system, ScriptEventSource, Player } from '@minecraft/server';
-import uiManager from './uiManager';
+import uiManager from './uiManager.js';
 import config from './config';
 import './uis/uiBuilder/root';
 import './uis/uiBuilder/add';
@@ -8,6 +8,7 @@ import './uis/uiBuilder/editButtons';
 import './uis/uiBuilder/addButton';
 import './uis/uiBuilder/editButton';
 import './uis/config/root'
+import './uis/config/main'
 import './commands/help';
 import './commands/uisList';
 import './uis/chests/root';
@@ -25,6 +26,8 @@ import './uis/sidebar/editLine';
 import './api/sidebarDisplay';
 import './uis/sidebar/trash';
 import './uis/sidebar/trashEdit';
+import './uis/currencyEditor/root';
+import './uis/currencyEditor/add';
 import './crates/main';
 import './features/chestLocking'
 import icons from './api/icons';
@@ -34,6 +37,12 @@ import chestUIBuilder from './api/chest/chestUIBuilder';
 import { formatStr } from './api/azaleaFormatting';
 import playerStorage from './api/playerStorage';
 import { generalConfig } from './configs';
+import './combatLog';
+import './uis/blockEditor.js';
+import './uis/entityEditor.js';
+import { prismarineDb } from './lib/prismarinedb.js';
+import emojis from './api/emojis.js';
+// import './matrix-anticheat/anticheat'
 // world.sendMessage(performance.now())
 icons.install(azaleaIconPack, true)
 system.afterEvents.scriptEventReceive.subscribe(e=>{
@@ -79,7 +88,6 @@ system.runInterval(()=>{
         for(const player of world.getPlayers()) playerStorage.saveData(player);
     }
 },1);
-
 // let id = chestUIBuilder.createChestGUI("test", "test", 3);
 // chestUIBuilder.addIconToChestGUI(id, 2, 5, "apple", "test", ["hello","world"], 2, "/say hi");
 // let id = uiBuilder.createUI("test", "Lorem ipsum dolor sit amet, consectetur adipiscing elit", "normal", "test");
@@ -90,3 +98,9 @@ system.runInterval(()=>{
 //     "/say hi",
 //     "vanilla/iron_sword"
 // )
+system.run(()=>{
+    let defaultCurrency = prismarineDb.economy.getCurrency("default");
+    if(defaultCurrency && defaultCurrency.symbol == "$") {
+        prismarineDb.economy.editSymbol(defaultCurrency.scoreboard, emojis.coins);
+    }
+})

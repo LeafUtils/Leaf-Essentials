@@ -40,7 +40,7 @@ class CommandManager {
         if(data.length > 1) {
             let subcmd = this.subcmds.findFirst({name: data[1], parent: data[0]})
             if(subcmd) {
-                return subcmd.data.callback({msg, args});
+                return subcmd.data.callback({msg, args: args.slice(1)});
             }
         }
         return cmd.data.callback({msg, args});
