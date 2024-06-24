@@ -10,7 +10,7 @@ uiManager.addUI(config.uiNames.CurrencyEditor, "Currency Editor", (player)=>{
         uiManager.open(player, config.uiNames.CurrencyEditorAdd)        
     })
     for(const currency of currencies) {
-        form.button(`§a(${currency.symbol}) §2${currency.scoreboard}\n§r§7${currency.displayName}`, icons.resolve("Packs/Asteroid/adventure_crystal_uncommon"), (player)=>{
+        form.button(`§a(${currency.symbol}) §2${currency.scoreboard}\n§r§7${currency.displayName}`, icons.resolve("leaf/image-481"), (player)=>{
 
         })
     }

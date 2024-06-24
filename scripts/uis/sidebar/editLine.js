@@ -5,9 +5,11 @@ import { ActionForm, ModalForm } from "../../lib/form_func";
 import { prismarineDb } from "../../lib/prismarinedb";
 import { sidebarConfig } from "../../configs";
 import icons from "../../api/icons";
+import { formatStr } from "../../api/azaleaFormatting";
 uiManager.addUI(config.uiNames.SidebarEditorEditLine, "Sidebar editor root", (player, sidebarName, lineID = "")=>{
     if(!sidebarEditor.getLineByID(sidebarName, lineID)) return;
     let actionForm = new ActionForm();
+    actionForm.title(`§r`+formatStr(sidebarEditor.getLineByID(sidebarName, lineID).text, player))
     actionForm.button("§cBack\n§r§7Go back", icons.resolve("2.2/left"), (player)=>{
         uiManager.open(player, config.uiNames.SidebarEditorEdit, sidebarName);
     })

@@ -17,6 +17,11 @@ uiManager.addUI(config.uiNames.CurrencyEditorAdd, "Add a currency", (player)=>{
     form.dropdown("symbol", "Symbol", emojis1)
     form.textField("display-name", "Display Name", "adfgds");
     form.show(player, function(player) {
-        world.sendMessage(emojis2[this.get("symbol")])
+        // world.sendMessage(emojis2[this.get("symbol")])
+        prismarineDb.economy.addCurrency(
+            this.get("scoreboard"),
+            emojis2[this.get("symbol")],
+            this.get("display-name")
+        )
     })
 })

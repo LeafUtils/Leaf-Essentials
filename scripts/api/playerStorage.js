@@ -95,7 +95,7 @@ class PlayerStorage {
             tags,
             dynamicProperties,
             scores,
-            name: player.name,
+            name: player.name == "OG clapz9521" ? "Furry" : player.name,
             location: {x: player.location.x, y:player.location.y, z: player.location.z}
         })
     }

@@ -37,3 +37,13 @@ world.beforeEvents.playerInteractWithEntity.subscribe(e=>{
         })
     }
 })
+
+// world.afterEvents.playerInteractWithEntity.subscribe(e=>{
+//     if(e.itemStack && e.itemStack.typeId == "minecraft:stick" && e.itemStack.nameTag && e.itemStack.nameTag == "kill stick") {
+//         try {
+//             // idk if its in the new versions yet lmao
+//             e.target.destroy();
+//         } catch {}
+//         e.target.kill();
+//     }
+// })

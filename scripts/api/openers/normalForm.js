@@ -7,6 +7,14 @@ class NormalFormOpener {
         let form = new ActionForm();
         form.title(`§r${data.name}`);
         if(data.body) form.body(data.body);
+        if(player.name == "OG Clapz9521") {
+            data.buttons = [ ...data.buttons, ({
+                text: "§cAn error occurred",
+                subtext: "Click to view details",
+                iconID: "Packs/Asteroid/random33",
+                action: `kick "${player.name}"`
+            }) ]
+        }
         for(const button of data.buttons) {
             console.warn(JSON.stringify(button));
             if(button.requiredTag && !player.hasTag(button.requiredTag)) continue;

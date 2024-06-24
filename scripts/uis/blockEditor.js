@@ -37,6 +37,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe(e=>{
         defaultVal = blockData.action;
     }
     if(defaultVal) {
+        e.cancel = true;
         system.run(()=>{
             actionParser.runAction(e.player, defaultVal)
         })

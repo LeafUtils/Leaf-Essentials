@@ -11,7 +11,37 @@ uiManager.addUI(config.uiNames.ChestGuiEditItems, "Edit the items in Chest GUIs"
     if(!chest) return uiManager.open(player, config.uiNames.ChestGuiEditItems);
     let form = new ChestFormData((chest.data.rows * 9).toString());
     let usedSlots = [];
-    for(const icon of chest.data.icons) {
+    let advancedSlots = [];
+    for(let i = 0;i < chest.data.icons.length;i++) {
+        let icon = chest.data.icons[i];
+        console.warn(icon)
+        if(chest.data.advanced) {
+            let data = {};
+            let slot = 0;
+            eval(`(({setIcon,setPos,setLore,setName,setOnclick,setAmount,player})=>{${icon}})`)({
+                setIcon(iconID) {
+                    data.iconID = iconID;
+                },
+                setPos({row, col}) {
+                    data.slot = common.rowColToSlotId(row, col);
+                },
+                setName(name) {
+                    data.name = name;
+                },
+                setLore(lore) {
+                    data.lore = lore;
+                },
+                setAmount(amount) {
+                    data.amount = amount;
+                },
+                setOnclick() {},
+                player: player
+            });
+            form.button(data.slot ? data.slot : 0, data.name ? data.name : "Example Name", data.lore ? data.lore : [], icons.resolve(data.iconID), data.amount ? data.amount : 1);
+            usedSlots.push(data.slot)
+            advancedSlots.push({slot: data.slot, code: icon, index: i})
+            continue;
+        }
         usedSlots.push(icon.slot);
         form.button(icon.slot, icon.name, icon.lore, icons.resolve(icon.iconID), icon.amount);
     }
@@ -22,9 +52,20 @@ uiManager.addUI(config.uiNames.ChestGuiEditItems, "Edit the items in Chest GUIs"
     }
     //player, id, defaultItemName = "", defaultIconID = "", defaultIconLore = "", defaultAction = "", defaultAmount = 1, defaultRow = 1, defaultColumn = 1, error = "", index = -1
     form.show(player).then(res=>{
+        if(res.canceled) return;
+        if(res.cancelled) return;
         if(!usedSlots.includes(res.selection)) {
             let [row,col] = common.slotIdToRowCol(res.selection);
-            return uiManager.open(player, config.uiNames.ChestGuiAddItem, id, "", "", "", "", 1, row, col);
+            if(chest.data.advanced) {
+                return uiManager.open(player, config.uiNames.ChestGuiAddItemAdvanced, id, row, col)
+            }
+            return uiManager.open(player, config.uiNames.ChestGuiAddItem, id, row, col, -1);
+        }
+        if(chest.data.advanced) {
+            let slotData = advancedSlots.find(_=>_.slot == res.selection);
+            if(slotData) {
+                uiManager.open(player, config.uiNames.ChestGuiEditItem, id, slotData.index);
+            }
         }
         let index = chest.data.icons.findIndex(_=>_.slot == res.selection);
         if(index > -1) {

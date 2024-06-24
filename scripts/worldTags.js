@@ -2,7 +2,7 @@ import { prismarineDb } from "./lib/prismarinedb";
 
 class WorldTags {
     constructor() {
-        this.tagsDb = prismarineDb.table("WorldTags").keyval();
+        this.tagsDb = prismarineDb.table("WorldTags2").keyval("WTAG");
     }
     removeTag(tag) {
         let tags = this.tagsDb.get("tags", []);

@@ -8,6 +8,9 @@ system.runInterval(()=>{
         let sidebarName = sidebarEditor.getSidebarNames()[0];
         let tag = player.getTags().find(_=>_.startsWith('sidebar:'));
         if(tag) sidebarName = tag.substring('sidebar:'.length);
-        player.onScreenDisplay.setTitle(sidebarEditor.parseEntireSidebar(player, sidebarName));
+        try {
+            player.onScreenDisplay.setTitle(sidebarEditor.parseEntireSidebar(player, sidebarName));
+
+        } catch {}
     }
 },1);

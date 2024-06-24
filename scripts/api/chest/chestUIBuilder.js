@@ -7,7 +7,7 @@ import { system, ScriptEventSource } from '@minecraft/server';
 class ChestUIBuilder {
     constructor() {
         this.db = prismarineDb.table("Chests");
-        this.validRows = [1, 2, 3, 4, 5, 6];
+        this.validRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         system.afterEvents.scriptEventReceive.subscribe(e=>{
             if(e.sourceType == ScriptEventSource.Entity && e.id == config.scripteventNames.open) {
                 let ui = this.db.findFirst({scriptevent: e.message});
@@ -20,6 +20,16 @@ class ChestUIBuilder {
         return this.db.insertDocument({
             title,
             advanced: false,
+            scriptevent,
+            rows,
+            icons: []
+        });
+    }
+    createAdvancedChestGUI(title, scriptevent, rows = 3) {
+        if(!this.validRows.includes(rows)) throw new Error("Row count is not valid.");
+        return this.db.insertDocument({
+            title,
+            advanced: true,
             scriptevent,
             rows,
             icons: []
@@ -45,11 +55,12 @@ class ChestUIBuilder {
         this.db.overwriteDataByID(doc.id, doc.data);
     }
     deleteChestGUI(id) {
-        this.db.deleteDocumentByID(id);
+        this.db.trashDocumentByID(id);
     }
     addIconToChestGUI(id, row, col, iconID, name, lore = [], itemStackAmount = 1, action) {
         let chest = this.db.getByID(id);
         if(!chest) throw new Error("Chest UI not found");
+        if(chest.data.advanced) throw new Error("Chest GUI cant be in advanced mode");
         let slot = common.rowColToSlotId(row, col);
         if(!iconID) throw new Error("Icon needs to be defined");
         if(!icons.resolve(iconID)) {
@@ -71,6 +82,7 @@ class ChestUIBuilder {
     replaceIconInChestGUI(id, row, col, iconID, name, lore = [], itemStackAmount = 1, action, index = 0) {
         let chest = this.db.getByID(id);
         if(!chest) throw new Error("Chest UI not found");
+        if(chest.data.advanced) throw new Error("Chest GUI cant be in advanced mode");
         let slot = common.rowColToSlotId(row, col);
         if(!iconID) throw new Error("Icon needs to be defined");
         if(!icons.resolve(iconID)) {
@@ -88,6 +100,18 @@ class ChestUIBuilder {
             action,
             amount: itemStackAmount
         })
+        this.db.overwriteDataByID(chest.id, chest.data);
+    }
+    addIconToChestGUIAdvanced(id, code) {
+        let chest = this.db.getByID(id);
+        if(!chest.data.advanced) throw new Error("Chest GUI must be in advanced mode");
+        chest.data.icons.push(code);
+        this.db.overwriteDataByID(chest.id, chest.data);
+    }
+    replaceIconInChestGUIAdvanced(id, code, index = 0) {
+        let chest = this.db.getByID(id);
+        if(!chest.data.advanced) throw new Error("Chest GUI must be in advanced mode");
+        chest.data.icons[index] = code;
         this.db.overwriteDataByID(chest.id, chest.data);
     }
 }

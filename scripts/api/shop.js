@@ -23,8 +23,38 @@ class ShopAPI {
     }
     createPlayerShop(title, body, player) {
         let id = playerStorage.getID(player);
-        this.db.insertDocument({
+        return this.db.insertDocument({
             type: "PLAYER_SHOP",
+            owner: id,
+            title,
+            body,
+            data: [
+                {
+                    name: "Uncategorized",
+                    items: []
+                }
+            ]
+        });
+    }
+    createAdminShop(title, body, player) {
+        let id = playerStorage.getID(player);
+        return this.db.insertDocument({
+            type: "ADMIN_SHOP",
+            owner: id,
+            title,
+            body,
+            data: [
+                {
+                    name: "Uncategorized",
+                    items: []
+                }
+            ]
+        });
+    }
+    createAdminSellShop(title, body, player) {
+        let id = playerStorage.getID(player);
+        return this.db.insertDocument({
+            type: "SELL_SHOP",
             owner: id,
             title,
             body,

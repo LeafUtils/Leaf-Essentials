@@ -12,6 +12,9 @@ class Icons {
         }
     }
     resolve(iconID) {
+        if(iconID.startsWith('^')) {
+            return iconID.substring(1)
+        }
         if(this.icons.has(iconID)) return this.icons.get(iconID);
         return null;
     }

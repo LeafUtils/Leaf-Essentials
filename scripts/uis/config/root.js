@@ -1,10 +1,23 @@
 import icons from "../../api/icons";
 import config from "../../config";
 import { ActionForm } from "../../lib/form_func";
+import { prismarineDb } from "../../lib/prismarinedb";
+import http from "../../networkingLibs/currentNetworkingLib";
 import uiManager from "../../uiManager";
+export let targetLeafDBVersion = 5.1
 
 uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
     let actionForm = new ActionForm();
+    let body = [];
+    if(prismarineDb.version > targetLeafDBVersion || prismarineDb.version < targetLeafDBVersion)
+        body.push(prismarineDb.version > targetLeafDBVersion ? `I see u are time travelling :3` : prismarineDb.version < targetLeafDBVersion ? `You are 100%% going to break something in here bro` : `idk`)
+    if(http.player) {
+        body.push(`§bExternal Network is setup properly. You can now get more features from Leaf Essentials`);
+    }
+    if(body && body.length) {
+        actionForm.body(body.join('\n§r'))
+    }
+
     actionForm.title("§f§u§l§l§s§c§r§e§e§nConfig UI")
     // actionForm.button(`§2Leaf Settings\n§r§7Common settings`, icons.resolve("Packs/Asteroid/jungle_leaves"), (player)=>{
     //     player.sendMessage(`§cThis feature is coming soon`);
@@ -25,9 +38,16 @@ uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
     actionForm.button(`§l§nMain Settings\n§r§7Main settings for leaf`, icons.resolve("Packs/Asteroid/slash"), (player)=>{
         uiManager.open(player, config.uiNames.ConfigMain)
     })
-    actionForm.button(`§l§bMisc Settings\n§r§7Miscellaneous Settings`, icons.resolve("Packs/Asteroid/dev"))
-    actionForm.button(`§l§aModules\n§r§7Enable/Disable Modules`, icons.resolve("Packs/Asteroid/quick_craft"))
-    actionForm.button(`§l§dModeration Settings\n§r§7Change moderation settings`, icons.resolve("Packs/Asteroid/profile_glyph_color"))
-    actionForm.button(`§l§eCredits\n§r§7See who helped with leaf`, icons.resolve("Packs/Asteroid/custom"))
+    // actionForm.button(`§l§bMisc Settings\n§r§7Miscellaneous Settings`, icons.resolve("Packs/Asteroid/dev"))
+    // actionForm.button(`§l§aModules\n§r§7Enable/Disable Modules`, icons.resolve("Packs/Asteroid/quick_craft"))
+    // actionForm.button(`§l§dModeration Settings\n§r§7Change moderation settings`, icons.resolve("Packs/Asteroid/profile_glyph_color"))
+    actionForm.button(`§l§eCredits\n§r§7See who helped with leaf`, icons.resolve("Packs/Asteroid/custom"), player=>{
+        uiManager.open(player, config.uiNames.ConfigCredits)
+    })
+    if(http.player) {
+        actionForm.button(`§l§9Discord Logs\n§r§7Online Exclusive`, icons.resolve(`leaf/image-0910`), (player)=>{
+            
+        })
+    }
     actionForm.show(player, false, ()=>{})
 })

@@ -1,7 +1,7 @@
 import { prismarineDb } from '../lib/prismarinedb';
 import { array_move } from './utils/array_move';
 import { formatStr } from './azaleaFormatting';
-import { system } from '@minecraft/server';
+import { system, world } from '@minecraft/server';
 const generateUUID = () => {
     let
       d = new Date().getTime(),
@@ -110,7 +110,7 @@ class SidebarEditor {
             _name: name
         })
         if(!doc) return;
-        doc.data.lines = doc.data.lines.filter(_=>_.id == id);
+        doc.data.lines = doc.data.lines.filter(_=>_.id != id);
         this.db.overwriteDataByID(doc.id, doc.data);
     }
     editLine(name, id, text) {
@@ -132,9 +132,11 @@ class SidebarEditor {
             _name: name
         })
         if(!doc) return;
-        let index = doc.data.lines.findIndex(_=>_.id != id);
-        if(index < 1) return;
-        array_move(doc.data.lines, index, index - 1);
+        let index = doc.data.lines.findIndex(_=>_.id == id);
+        // world.sendMessage(`Index: ${index}`);
+        // world.sendMessage(JSON.stringify(doc.data.lines, null, 2));
+        if(index + 1 >= doc.data.lines.length) return;
+        array_move(doc.data.lines, index, index + 1);
         this.db.overwriteDataByID(doc.id, doc.data);
     }
     moveLineUp(name, id) {
@@ -142,9 +144,13 @@ class SidebarEditor {
             _name: name
         })
         if(!doc) return;
-        let index = doc.data.lines.findIndex(_=>_.id != id);
-        if(index + 1 >= doc.data.lines.length) return;
-        array_move(doc.data.lines, index, index + 1);
+        let index = doc.data.lines.findIndex(_=>_.id == id);
+        // world.sendMessage(`Index: ${index}`);
+        // world.sendMessage(JSON.stringify(doc.data.lines, null, 2));
+        if(index < 1) return;
+        
+        array_move(doc.data.lines, index, index - 1);
+
         this.db.overwriteDataByID(doc.id, doc.data);
     }
 }
