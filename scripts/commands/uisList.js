@@ -9,6 +9,7 @@ commandManager.addCommand("uis", "View UIs in Leaf Essentials", ({msg})=>{
         text.push(`§e${ui.id} §r§7${ui.description ? ui.description : "No Description"}`);
     }
     text.push(``);
-    text.push(`§2You can open a UI by doing §f/scriptevent ${config.scripteventNames.openDefault} §e<UI ID>`);
+    text.push(`§2You can open a UI by doing §f/scriptevent ${config.scripteventNames.openDefault}§eui_id`);
+    text.push(`§2Example: the ui §epay §r§2would be §a/scriptevent §bleafgui:§epay`)
     msg.sender.sendMessage(text.join('\n§r'))
 })

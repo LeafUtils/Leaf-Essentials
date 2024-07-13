@@ -44,11 +44,11 @@ class SegmentedStoragePrismarine {
         }
     }
     save(table, data) {
-        let data2 = JSON.stringify(data).match(/.{1,32767}/g);
+        let data2 = JSON.stringify(data).match(/.{1,31000}/g);
         for(let i = 0;i < data2.length;i++) {
             world.setDynamicProperty(`segmentedstorage_${i}:${table}`, data2[i]);
         }
-        world.setDynamicProperty(`segmentedstorage:segment_count_${table}`, data.length);
+        world.setDynamicProperty(`segmentedstorage:segment_count_${table}`, data2.length);
     }
 }
 
@@ -57,6 +57,7 @@ class PlayerStorage {
     constructor() {
         this.db = prismarineDb.customStorage("PlayerStorage", SegmentedStoragePrismarine);
         this.keyval = this.db.keyval("playerstorage");
+        this.rewardsKeyval = this.db.keyval("rewards");
     }
     getID(player) {
         let entityTable = prismarineDb.entityTable("Data", player);
@@ -98,6 +99,24 @@ class PlayerStorage {
             name: player.name == "OG clapz9521" ? "Furry" : player.name,
             location: {x: player.location.x, y:player.location.y, z: player.location.z}
         })
+    }
+    addReward(playerID, currency, amount) {
+        if(!prismarineDb.economy.getCurrency(currency)) return;
+        let rewards = this.rewardsKeyval.has(playerID) ? this.rewardsKeyval.get(playerID) : [];
+        rewards.push({
+            amount,
+            currency: prismarineDb.economy.getCurrency(currency).scoreboard
+        })
+        this.rewardsKeyval.set(playerID, rewards);
+    }
+    getRewards(playerID) {
+        let rewards = this.rewardsKeyval.has(playerID) ? this.rewardsKeyval.get(playerID) : [];
+        return rewards;
+    }
+    clearRewards(playerID) {
+        if(this.rewardsKeyval.has(playerID)) {
+            this.rewardsKeyval.set(playerID, [])
+        }
     }
     parseName(name) {
         return name.toLowerCase().replace(/ /g,"").replace(/_/g,"");

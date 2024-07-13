@@ -11,14 +11,14 @@ uiManager.addUI(config.uiNames.Basic.Confirmation, "Basic Confirmation UI", (pla
     form.button("§aYes", icons.resolve("leaf/image-822"), player=>{
         if(typeof actionYes === "function") {
             actionYes(player);
-        } else if(typeof actionYes === "function") {
+        } else if(typeof actionYes === "string") {
             actionParser.runAction(player, actionYes)
         }
     })
     form.button("§cNo", icons.resolve("leaf/image-1168"), player=>{
         if(typeof actionNo === "function") {
             actionNo(player);
-        } else if(typeof actionNo === "function") {
+        } else if(typeof actionNo === "string") {
             actionParser.runAction(player, actionNo)
         }
     })

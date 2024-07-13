@@ -1,7 +1,7 @@
 import { ActionFormData } from '@minecraft/server-ui';
 import { typeIdToDataId, typeIdToID } from "./typeIds.js";
 
-const number_of_1_16_100_items = 278;
+const number_of_1_16_100_items = 6;
 // world.afterEvents.item
 const sizes = new Map([
 	['single', ['§c§h§e§s§t§2§7§r', 27]], ['small', ['§c§h§e§s§t§2§7§r', 27]],
@@ -18,6 +18,7 @@ const sizes = new Map([
 	['63', ['§c§h§e§s§t§6§3§r', 63]],
 	['81', ['§c§h§e§s§t§8§1§r', 81]],
 	['90', ['§c§h§e§s§t§9§0§r', 90]],
+	['RW', ['§c§h§e§s§t§r§w', 9]],
 ]);
 class ChestFormData {
 	#titleText; #buttonArray; #callbackObject;

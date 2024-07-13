@@ -2,6 +2,9 @@ import { Player, system, world, MoonPhase } from "@minecraft/server";
 import hardCodedRanks from "./hardCodedRanks.js";
 import emojis from "./emojis";
 import { prismarineDb } from "../lib/prismarinedb.js";
+import { getClaimText } from "../landClaims.js";
+import playerStorage from "./playerStorage.js";
+import OpenClanAPI from "./OpenClanAPI.js";
 let lastTick = Date.now();
 let tps = 20;
 let configDb = prismarineDb.table("LegacyConfig").keyval("LegacyConfig");
@@ -68,6 +71,10 @@ function getScore(objective, player) {
     return number
   }
 let a = new Map();
+system.runInterval(()=>{
+    a.clear();
+    timeArray = [];
+}, 20 * 1000);
 export function formatStr(str, player = null, extraVars = {}, session = Date.now()) {
     if(!a.has(session)) a.set(session, 0)
     let newStr = str;
@@ -136,6 +143,7 @@ export function formatStr(str, player = null, extraVars = {}, session = Date.now
         vars.deaths = `${getScore("azalea:deaths", player)}`;
         vars.cps = `${getScore("azalea:cps", player)}`;
         vars["k/d"] = `${divide(parseFloat(vars.kills), parseFloat(vars.deaths))}`;
+        vars.claim = getClaimText(player);
 
     }
     vars.tps = `${Math.floor(tps)}`;
@@ -196,7 +204,6 @@ export function formatStr(str, player = null, extraVars = {}, session = Date.now
         vars.mc = `§7`
         vars.isGay = `true`;
     }
-  
     for(const key in vars) {
         let val = vars[key];
         newStr = newStr.replaceAll(`<${key}>`, `${val}`);
@@ -215,7 +222,7 @@ export function formatStr(str, player = null, extraVars = {}, session = Date.now
             for(const emoji in emojis) {
                 ranks = ranks.map(_=>_.replaceAll(`:${emoji}:`, emojis[emoji]))
             }
-            return ranks.join(separator);
+            return ranks.join(separator).replaceAll('&Q;','"');
         },
         alternate(text, codes) {
             let codesList = codes.split('').map(_=>`§${_}`);
@@ -239,7 +246,9 @@ export function formatStr(str, player = null, extraVars = {}, session = Date.now
         scoreshort2(stringName, objective) {
             return `${abbrNum(getScore(objective, stringName))}`;
         },
-
+        is_afk(isAfk, notAfk) {
+            return player.hasTag("leaf:afk") ? isAfk : notAfk ? notAfk : "";
+        },
         has_tag(tag, ifHasTag, ifNotHasTag) {
             if(!player) return ifNotHasTag == "<bl>" ? "" : ifNotHasTag;
             if(!player.hasTag(tag)) return ifNotHasTag == "<bl>" ? "" : ifNotHasTag
@@ -262,12 +271,26 @@ export function formatStr(str, player = null, extraVars = {}, session = Date.now
         },
         fns() {
             return Object.keys(fns).join(', ')
+        },
+        clan(text, notText) {
+            let clan2 = OpenClanAPI.getClan(player);
+            return clan2 ? text.replace('[@CLAN]', clan2.data.name) : notText ? notText : "";
+        },
+        gay(text) {
+            let codes = 'c6eabd'
+            let codesList = codes.split('').map(_=>`§${_}`);
+            let newText = [];
+            for(let i2 = 0; i2 < text.length; i2++) {
+                newText.push(`${codesList[i2 % codesList.length]}${text[i2]}`);
+            }
+            return newText.join('');
         }
     }
     for(const emoji in emojis) {
         newStr = newStr.replaceAll(`:${emoji}:`, emojis[emoji])
     }
     vars.cause_an_error = "<cause_an_error>"
+    
     let b = [];
     let c = [];
     for(const key of Object.keys(fns)) {

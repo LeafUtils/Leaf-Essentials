@@ -23,24 +23,24 @@ eventHandler.on("create", (objective, loc, dimension = "minecraft:overworld")=>{
         theme: 0
     });
 })
-system.runInterval(()=>{
-    for(const lb of db.data) {
-        let entity;
-        if(!lb.data.entityID) {
-            entity = world.getDimension(lb.data.dimension).spawnEntity('leaf:floating_text', lb.data.loc);
-            lb.data.entityID = entity.id;
-            db.overwriteDataByID(lb.id, lb.data);
-        } else {
-            try {
-                entity = world.getEntity(lb.data.entityID);
-            } catch {entity = null}
-            if(!entity) entity = null;
-            if(!entity) {
-                entity = world.getDimension(lb.data.dimension).spawnEntity('leaf:floating_text', lb.data.loc);
-                lb.data.entityID = entity.id;
-                db.overwriteDataByID(lb.id, lb.data);
-            }
-        }
-        entity.nameTag = `${Date.now()}`
-    }
-},20);
+// system.runInterval(()=>{
+//     for(const lb of db.data) {
+//         let entity;
+//         if(!lb.data.entityID) {
+//             entity = world.getDimension(lb.data.dimension).spawnEntity('leaf:floating_text', lb.data.loc);
+//             lb.data.entityID = entity.id;
+//             db.overwriteDataByID(lb.id, lb.data);
+//         } else {
+//             try {
+//                 entity = world.getEntity(lb.data.entityID);
+//             } catch {entity = null}
+//             if(!entity) entity = null;
+//             if(!entity) {
+//                 entity = world.getDimension(lb.data.dimension).spawnEntity('leaf:floating_text', lb.data.loc);
+//                 lb.data.entityID = entity.id;
+//                 db.overwriteDataByID(lb.id, lb.data);
+//             }
+//         }
+//         entity.nameTag = `${Date.now()}`
+//     }
+// },20);

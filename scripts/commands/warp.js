@@ -22,14 +22,14 @@ commandManager.addCommand("warp", {description:"Warps!",aliases:["warps","w"]}, 
 })
 commandManager.addSubcommand("warp", "set", {description: "set a warp"}, ({msg,args})=>{
     if(!prismarineDb.permissions.hasPermission(msg.sender, "warps.set"))
-        msg.sender.sendMessage(translation.getTranslation(msg.sender, "error", translation.getTranslation(msg.sender, "commands.errors.noperms", "warps.set")))
+        return msg.sender.sendMessage(translation.getTranslation(msg.sender, "error", translation.getTranslation(msg.sender, "commands.errors.noperms", "warps.set")))
 
     let result = warpAPI.setWarpAtVec3(msg.sender.location, args.join(' '));
     msg.sender.sendMessage(translation.getTranslation(msg.sender, "success", "Successfully set warp!"))
 })
 commandManager.addSubcommand("warp", "remove", {description: "set a warp"}, ({msg,args})=>{
     if(!prismarineDb.permissions.hasPermission(msg.sender, "warps.remove"))
-        msg.sender.sendMessage(translation.getTranslation(msg.sender, "error", translation.getTranslation(msg.sender, "commands.errors.noperms", "warps.remove")))
+        return msg.sender.sendMessage(translation.getTranslation(msg.sender, "error", translation.getTranslation(msg.sender, "commands.errors.noperms", "warps.remove")))
 
     let result = warpAPI.deleteWarp(args.join(' '));
     if(!result) {

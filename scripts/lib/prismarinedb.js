@@ -1562,14 +1562,14 @@ var Economy = class {
   editDisplayName(currencyScoreboard, newDisplayName) {
     let doc2 = __privateGet(this, _table).findFirst({ type: "CURRENCY", scoreboard: currencyScoreboard });
     if (doc2) {
-      doc2.data.displayName = newSymbol;
+      doc2.data.displayName = newDisplayName;
       __privateGet(this, _table).overwriteDataByID(doc2.id, doc2.data);
     }
   }
   editScoreboard(currencyScoreboard, newScoreboard) {
     let doc2 = __privateGet(this, _table).findFirst({ type: "CURRENCY", scoreboard: currencyScoreboard });
     if (doc2) {
-      doc2.data.scoreboard = newSymbol;
+      doc2.data.scoreboard = newScoreboard;
       __privateGet(this, _table).overwriteDataByID(doc2.id, doc2.data);
     }
   }
@@ -1583,6 +1583,10 @@ var Economy = class {
         displayName
       });
     }
+  }
+  deleteCurrency(scoreboard) {
+    let doc2 = __privateGet(this, _table).findFirst({ type: "CURRENCY", scoreboard });
+    if(doc2) __privateGet(this, _table).deleteDocumentByID(doc2.id);
   }
   getCurrency(scoreboard = "default") {
     if (scoreboard == "default") {
@@ -1613,8 +1617,6 @@ var Economy = class {
     }
   }
   getMoney(player, currencyScoreboard = "default") {
-    if (typeof amount != "number") throw new Error("Amount must be number!");
-    if (amount < 0) throw new Error("Amount must be positive");
     let currency = this.getCurrency(currencyScoreboard);
     if (currency) {
       let scoreboard = world3.scoreboard.getObjective(currency.scoreboard);
@@ -2032,14 +2034,14 @@ invokeEvent_fn = function (...args) {
 };
 keyval_fn = function (id2) {
   const get2 = (key, defaultValue = null) => {
-    this.load();
+    // this.load();
     let doc2 = this.getByID(id2);
     let val = doc2.data.__keyval_data[key] ? doc2.data.__keyval_data[key].data : null;
     if (defaultValue != null && !val) return defaultValue;
     return val;
   };
   const set = (key, val) => {
-    this.load();
+    // this.load();
     let doc2 = this.getByID(id2);
     let currentValue = doc2.data.__keyval_data[key] ? doc2.data.__keyval_data[key].data : null;
     let newValue = {};
@@ -2054,12 +2056,12 @@ keyval_fn = function (id2) {
     this.overwriteDataByID(doc2.id, doc2.data);
   };
   const del = (key) => {
-    this.load();
+    // this.load();
     let doc2 = this.getByID(id2);
     if (doc2.data.__keyval_data[key]) delete doc2.data.__keyval_data[key];
   };
   const has2 = (key) => {
-    this.load();
+    // this.load();
     let doc2 = this.getByID(id2);
     if (doc2.data.__keyval_data.hasOwnProperty(key)) {
       return true;
@@ -2068,8 +2070,9 @@ keyval_fn = function (id2) {
     }
   };
   const keys2 = (key) => {
-    this.load();
-    return Object.keys(doc.data.__keyval_data);
+    // this.load();
+    let doc2 = this.getByID(id2);
+    return Object.keys(doc2.data.__keyval_data);
   };
   return { get: get2, set, delete: del, has: has2, keys: keys2 };
 };
@@ -2445,7 +2448,7 @@ var PrismarineDB = class {
       _main: __privateGet(this, _reservedKeyVal)
     });
     this.permissions = new PermissionSystem();
-    this.version = 5.1;
+    this.version = 5.2;
     this.economy = new Economy(__privateGet(this, _reservedEconomyTable));
     this.config = this.keyval("conf");
   }

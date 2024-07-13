@@ -5,6 +5,7 @@ import { prismarineDb } from "../../lib/prismarinedb";
 import uiManager from "../../uiManager";
 import common from "../chest/common";
 import icons from "../icons";
+import iconViewerCategories from "../../iconViewerCategories";
 import * as _ from './underscore';
 uiManager.addUI(config.uiNames.IconViewer, "Icon Viewer", (player, page = 0, callbackFn, favoritedOnly = false, iconIDSearch = false, iconIDSearchError = false, defaultIconID = null)=>{
     let pdbTable = prismarineDb.entityTable("icons", player).keyval("main");
@@ -62,7 +63,16 @@ uiManager.addUI(config.uiNames.IconViewer, "Icon Viewer", (player, page = 0, cal
         })
     }
     for(let i = 0;i < icons2.length;i++) {
-        chest.button(i, icons2[i], [], icons.resolve(icons2[i]), favoritedOnly ? 1 : player.hasTag(`favorited-icon:${icons2[i]}`) ? 2 : 1, false, ()=>{
+        let iconData = icons.getIconData(icons2[i]);
+        let lore = [];
+        if(iconData && iconData.name) {
+            lore.push(`§8${icons2[i]}`);
+        }
+        if(iconData && iconData.category) {
+            lore.push(` `)
+            lore.push(`${iconViewerCategories[iconData.category] ? iconViewerCategories[iconData.category].Name : "§bUnknown"}`)
+        }
+        chest.button(i, iconData && iconData.name ? iconData.name : icons2[i], lore, icons.resolve(icons2[i]), favoritedOnly ? 1 : player.hasTag(`favorited-icon:${icons2[i]}`) ? 2 : 1, false, ()=>{
             let hopper = new ChestFormData("27");
             hopper.title(`${icons2[i]} actions`)
             for(let i = 0;i < 27;i++) {

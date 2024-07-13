@@ -4,6 +4,7 @@ import config from "../config";
 import { ModalForm } from "../lib/form_func";
 import uiManager from "../uiManager";
 import actionParser from "../api/actionParser";
+import { prismarineDb } from "../lib/prismarinedb";
 let inUI = new Map();
 uiManager.addUI(config.uiNames.BlockEditor, "Block editor", (player, vec3)=>{
     let modalForm = new ModalForm();
@@ -23,7 +24,7 @@ uiManager.addUI(config.uiNames.BlockEditor, "Block editor", (player, vec3)=>{
 })
 
 world.beforeEvents.playerInteractWithBlock.subscribe(e=>{
-    if(e.itemStack && e.itemStack.typeId == 'leaf:block_editor' && !inUI.has(e.player.id)) {
+    if(e.itemStack && e.itemStack.typeId == 'leaf:block_editor' && !inUI.has(e.player.id) && prismarineDb.permissions.hasPermission(e.player, "blockeditor.open")) {
         inUI.set(e.player.id, true);
         system.run(()=>{
             uiManager.open(e.player, config.uiNames.BlockEditor, e.block.location);

@@ -1,3 +1,5 @@
+import { world } from "@minecraft/server";
+
 export class SegmentedStoragePrismarine {
     load(table) {
         let segmentCount = 0;
@@ -26,10 +28,10 @@ export class SegmentedStoragePrismarine {
         }
     }
     save(table, data) {
-        let data2 = JSON.stringify(data).match(/.{1,32767}/g);
+        let data2 = JSON.stringify(data).match(/.{1,31000}/g);
         for(let i = 0;i < data2.length;i++) {
             world.setDynamicProperty(`segmentedstorage_${i}:${table}`, data2[i]);
         }
-        world.setDynamicProperty(`segmentedstorage:segment_count_${table}`, data.length);
+        world.setDynamicProperty(`segmentedstorage:segment_count_${table}`, data2.length);
     }
 }

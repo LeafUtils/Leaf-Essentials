@@ -4,7 +4,7 @@ import { ActionForm } from "../../lib/form_func";
 import { prismarineDb } from "../../lib/prismarinedb";
 import http from "../../networkingLibs/currentNetworkingLib";
 import uiManager from "../../uiManager";
-export let targetLeafDBVersion = 5.1
+export let targetLeafDBVersion = 5.2
 
 uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
     let actionForm = new ActionForm();
@@ -18,7 +18,7 @@ uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
         actionForm.body(body.join('\n§r'))
     }
 
-    actionForm.title("§f§u§l§l§s§c§r§e§e§nConfig UI")
+    actionForm.title("§t§e§s§t§rConfig UI")
     // actionForm.button(`§2Leaf Settings\n§r§7Common settings`, icons.resolve("Packs/Asteroid/jungle_leaves"), (player)=>{
     //     player.sendMessage(`§cThis feature is coming soon`);
     //     uiManager.open(player, config.uiNames.ConfigRoot)
@@ -39,8 +39,8 @@ uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
         uiManager.open(player, config.uiNames.ConfigMain)
     })
     // actionForm.button(`§l§bMisc Settings\n§r§7Miscellaneous Settings`, icons.resolve("Packs/Asteroid/dev"))
-    // actionForm.button(`§l§aModules\n§r§7Enable/Disable Modules`, icons.resolve("Packs/Asteroid/quick_craft"))
-    // actionForm.button(`§l§dModeration Settings\n§r§7Change moderation settings`, icons.resolve("Packs/Asteroid/profile_glyph_color"))
+    // actionForm.button(`§l§aModules\n§r§7Enable/Disable Modules`, icons.resolve("leaf/image-669"))
+    // actionForm.button(`§l§dModeration Settings\n§r§7Change moderation settings`, icons.resolve("leaf/image-613"))
     actionForm.button(`§l§eCredits\n§r§7See who helped with leaf`, icons.resolve("Packs/Asteroid/custom"), player=>{
         uiManager.open(player, config.uiNames.ConfigCredits)
     })

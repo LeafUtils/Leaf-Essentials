@@ -55,7 +55,7 @@ uiManager.addUI(config.uiNames.UIBuilderAddButton, "Add a button", (player, id, 
         let modalForm = new ModalForm();
         modalForm.textField("Text§c*", "Text on the button", data.text ? data.text : undefined);
         modalForm.textField("Subtext", "Subtext on the button", data.subtext ? data.subtext : undefined);
-        modalForm.textField("Required Tag", "Tag required to use button", data.requiredTag ? data.data.requiredTag : undefined);
+        modalForm.textField("Required Tag", "Tag required to use button", data.requiredTag ? data.requiredTag : undefined);
         modalForm.show(player, false, (player, response)=>{
             if(response.canceled) return uiManager.open(player, config.uiNames.UIBuilderAddButton, id, index, data, false);
             data.text = response.formValues[0];

@@ -91,5 +91,11 @@ export default {
       "MsgColor": "§f",
       "BracketColor": "§7",
       "IgnoreOverrideDevRank": true
+    },
+    "AzaelXZMC": {
+      "Ranks": ["§cI drink period blood", "§bF§fe§dm§bb§fo§di"],
+      "NameColor": "§4",
+      "MsgColor": "§f",
+      "BracketColor": "§7"
     }
   }

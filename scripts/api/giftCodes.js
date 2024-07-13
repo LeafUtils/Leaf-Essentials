@@ -5,7 +5,7 @@ class GiftCodes {
         this.db = prismarineDb.table("GiftCodes");
     }
     createCode(code, action, useOnce = false) {
-        let doc = this.db.findDocuments({
+        let doc = this.db.findFirst({
             code
         });
         if(doc) return;
@@ -26,7 +26,7 @@ class GiftCodes {
         this.db.deleteDocumentByID(id);
     }
     getCode(code) {
-        let doc = this.db.findDocuments({
+        let doc = this.db.findFirst({
             code
         });
         if(!doc) return;

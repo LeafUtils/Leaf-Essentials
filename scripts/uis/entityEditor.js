@@ -3,6 +3,7 @@ import config from "../config";
 import uiManager from "../uiManager";
 import { ModalForm } from "../lib/form_func";
 import actionParser from "../api/actionParser";
+import { prismarineDb } from "../lib/prismarinedb";
 
 uiManager.addUI(config.uiNames.EntityEditor, "Entity Editor", (player, entity)=>{
     let command = "";
@@ -19,7 +20,7 @@ uiManager.addUI(config.uiNames.EntityEditor, "Entity Editor", (player, entity)=>
 })
 
 world.beforeEvents.playerInteractWithEntity.subscribe(e=>{
-    if(e.itemStack && e.itemStack.typeId == "leaf:entity_editor") {
+    if(e.itemStack && e.itemStack.typeId == "leaf:entity_editor" && prismarineDb.permissions.hasPermission(e.player, "entityeditor.open")) {
         system.run(()=>{
             uiManager.open(e.player, config.uiNames.EntityEditor, e.target);
 

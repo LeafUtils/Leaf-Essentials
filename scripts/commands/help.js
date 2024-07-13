@@ -30,8 +30,9 @@ commandManager.addSubcommand("help", "setup", {description: "Get help setting up
     msg.sender.sendMessage("WIP")
 })
 commandManager.addSubcommand("help", "version", {description: "Get help setting up Leaf Essentials"}, ({msg})=>{
-    msg.sender.sendMessage(`Leaf Version - V0.1.2`);
+    msg.sender.sendMessage(`Leaf Version - V0.1.6`);
     msg.sender.sendMessage(`LeafDB Version - V${prismarineDb.version.toFixed(1)}`);
+    msg.sender.sendMessage(`OpenClanAPI Version - §cModule Not Registered`);
 })
 commandManager.addSubcommand("help", "my-id", {description: "Get your player ID"}, ({msg})=>{
     msg.sender.sendMessage(playerStorage.getID(msg.sender))

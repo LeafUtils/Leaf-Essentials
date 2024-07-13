@@ -5,119 +5,236 @@ let leafIconPack = new Map([
     ["pack_data", new Map([
         [
             "image-001",
-            "textures/leaf_icons/image-001"
+            {
+                icon: "textures/leaf_icons/image-001",
+                name: "Minecraft Wiki",
+                category: "Misc"
+            }
         ],
         [
             "image-002",
-            "textures/leaf_icons/image-002"
+            {
+                icon: "textures/leaf_icons/image-002",
+                name: "Pickaxe 1",
+                category: "Items"
+            }
         ],
         [
             "image-003",
-            "textures/leaf_icons/image-003"
+            {
+                icon: "textures/leaf_icons/image-003",
+                name: "Bow 1",
+                category: "Items"
+            }
         ],
         [
             "image-004",
-            "textures/leaf_icons/image-004"
+            {
+                icon: "textures/leaf_icons/image-004",
+                name: "Random 1",
+                category: "Misc"
+            }
+            
         ],
         [
             "image-005",
-            "textures/leaf_icons/image-005"
+            {
+                icon: "textures/leaf_icons/image-005",
+                name: "Arctic Fox Armor",
+                category: "Entity"
+            }
         ],
         [
             "image-006",
-            "textures/leaf_icons/image-006"
+            {
+                icon: "textures/leaf_icons/image-006",
+                name: "Bow 2",
+                category: "Items"
+            }
         ],
         [
             "image-007",
-            "textures/leaf_icons/image-007"
+            {
+                icon: "textures/leaf_icons/image-007",
+                name: "Axe 1",
+                category: "Items"
+            }
         ],
         [
             "image-008",
-            "textures/leaf_icons/image-008"
+            {
+                icon: "textures/leaf_icons/image-008",
+                name: "Bow 3",
+                category: "Items"
+            }
         ],
         [
             "image-009",
-            "textures/leaf_icons/image-009"
+            {
+                icon: "textures/leaf_icons/image-009",
+                name: "Random 2",
+                category: "Misc"
+            }
         ],
         [
             "image-010",
-            "textures/leaf_icons/image-010"
+            {
+                icon: "textures/leaf_icons/image-010",
+                name: "Random 3",
+                category: "Misc"
+            }
         ],
         [
             "image-011",
-            "textures/leaf_icons/image-011"
+            {
+                icon: "textures/leaf_icons/image-011",
+                name: "Armor with gold trim",
+                category: "Entity"
+            }
         ],
         [
             "image-012",
-            "textures/leaf_icons/image-012"
+            {
+                icon: "textures/leaf_icons/image-012",
+                name: "Big stick",
+                category: "Items"
+            }
         ],
         [
             "image-013",
-            "textures/leaf_icons/image-013"
+            {
+                icon: "textures/leaf_icons/image-013",
+                name: "Advanced stick",
+                category: "Items"
+            }
         ],
         [
             "image-014",
-            "textures/leaf_icons/image-014"
+            {
+                icon: "textures/leaf_icons/image-014",
+                name: "Sword 1",
+                category: "Items"
+            }
         ],
         [
             "image-015",
-            "textures/leaf_icons/image-015"
+            {
+                icon: "textures/leaf_icons/image-015",
+                name: "Bee armor 1",
+                category: "Entity"
+            }
         ],
         [
             "image-016",
-            "textures/leaf_icons/image-016"
+            {
+                icon: "textures/leaf_icons/image-016",
+                name: "Bee armor 2",
+                category: "Entity"
+            }
         ],
         [
             "image-017",
-            "textures/leaf_icons/image-017"
+            {
+                icon: "textures/leaf_icons/image-017",
+                name: "Random 4",
+                category: "Misc"
+            }
         ],
         [
             "image-018",
-            "textures/leaf_icons/image-018"
+            {
+                icon: "textures/leaf_icons/image-018",
+                name: "Random 5",
+                category: "Misc"
+            }
         ],
         [
             "image-019",
-            "textures/leaf_icons/image-019"
+            {
+                icon: "textures/leaf_icons/image-019",
+                name: "Random 6",
+                category: "Misc"
+            }
         ],
         [
             "image-020",
-            "textures/leaf_icons/image-020"
+            {
+                icon: "textures/leaf_icons/image-020",
+                name: "Bow 4",
+                category: "Items"
+            },
         ],
         [
             "image-021",
-            "textures/leaf_icons/image-021"
+            {
+                icon: "textures/leaf_icons/image-021",
+                name: "Random 7",
+                category: "Misc"
+            }
         ],
         [
             "image-022",
-            "textures/leaf_icons/image-022"
+            {
+                icon: "textures/leaf_icons/image-022",
+                name: "Hammer",
+                category: "Items"
+            }
         ],
         [
             "image-023",
-            "textures/leaf_icons/image-023"
+            {
+                icon: "textures/leaf_icons/image-023",
+                name: "Random 8",
+                category: "Misc"
+            }
         ],
         [
             "image-024",
-            "textures/leaf_icons/image-024"
+            {
+                icon: "textures/leaf_icons/image-024",
+                name: "Bow 5",
+                category: "Items"
+            }
         ],
         [
             "image-025",
-            "textures/leaf_icons/image-025"
+            {
+                icon: "textures/leaf_icons/image-025",
+                name: "Bow 6",
+                category: "Items"
+            }
         ],
         [
             "image-026",
-            "textures/leaf_icons/image-026"
+            {
+                icon: "textures/leaf_icons/image-026",
+                name: "Sword 2",
+                category: "Items"
+            }
         ],
         [
             "image-027",
-            "textures/leaf_icons/image-027"
+            {
+                icon: "textures/leaf_icons/image-027",
+                name: "Sword 3",
+                category: "Items"
+            }
         ],
         [
             "image-028",
-            "textures/leaf_icons/image-028"
+            {
+                icon: "textures/leaf_icons/image-028",
+                name: "Bow 7",
+                category: "Items"
+            }
         ],
         [
             "image-029",
-            "textures/leaf_icons/image-029"
+            {
+                icon: "textures/leaf_icons/image-029",
+                name: "Bow 8",
+                category: "Items"
+            }
         ],
         [
             "image-030",

@@ -9,12 +9,21 @@ class CustomCommands {
         return this.db.insertDocument({
             name,
             description,
-            category
+            category,
+            actions: [],
+            subcommands: []
         })
     }
     deleteCommand(name) {
         let doc = this.db.findFirst({name});
         if(!doc) return;
         this.db.deleteDocumentByID(doc.id);
+    }
+    createSubcommand(mainCommand, name, description) {
+        let cmd = this.db.findFirst({name:mainCommand})
+        if(!cmd) return;
+        if(cmd.data.subcommands.find(_=>_.name == name)) return;
+        cmd.data.subcommands.push({description,name})
+        this.db.overwriteDataByID(cmd.id, cmd.data);
     }
 }

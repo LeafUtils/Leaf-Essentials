@@ -10,5 +10,8 @@ uiManager.addUI(config.uiNames.ConfigCredits, "Credits", (player)=>{
     form.button("§eAsteroid3946\n§7Designer", `textures/minidevs/Astroidboi`, (player)=>{
         uiManager.open(player, config.uiNames.ConfigRoot);
     })
+    form.button("§aRexy Cloudy\n§7Fortnite balls", `textures/minidevs/icon`, (player)=>{
+        uiManager.open(player, config.uiNames.ConfigRoot);
+    })
     form.show(player, false, ()=>{})
 })

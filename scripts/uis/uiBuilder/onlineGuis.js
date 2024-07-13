@@ -59,7 +59,7 @@ uiManager.addUI(config.uiNames.OnlineGUIsList, "", (player, data, page = "main")
     form.title(`Online GUI Templates §b(${JSON.parse(data).length})`)
     for (const thing of JSON.parse(data)) {
         // world.sendMessage(JSON.stringify(thing.guiData.name, null, 2))
-        form.button(`§a${thing.guiData.name}\n§7${thing.publishedBy} §f(v${thing.madeInLeafVersion})`, icons.resolve(thing.guiData.icon ? thing.guiData.icon : thing.guiData.buttons && thing.guiData.buttons.length ? thing.guiData.buttons[0].iconID : null), (player) => {
+        form.button(`§a${thing.guiData.name}\n§7${thing.publishedBy} §f(v${thing.madeInLeafVersion})`, icons.resolve(thing.guiData.icon ? thing.guiData.icon : thing.guiData.buttons && thing.guiData.buttons.length ? thing.guiData.buttons[0].iconID : ""), (player) => {
             uiBuilder.db.insertDocument(thing.guiData)
  
         })
