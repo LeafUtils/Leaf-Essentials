@@ -16,6 +16,8 @@ import './uis/uiBuilder/editButton';
 import './uis/config/root'
 import './uis/config/main'
 import './uis/config/credits.js'
+import './uis/config/clans/clansConfigRoot.js'
+import './uis/config/modules.js'
 import './commands/help';
 import './commands/uisList';
 import './commands/warp.js'
@@ -88,16 +90,15 @@ import { SegmentedStoragePrismarine } from './prismarineDbStorages/segmented.js'
 import OpenClanAPI from './api/OpenClanAPI.js';
 import itemdb from './api/itemdb.js';
 import './uis/generatorUI.js'
-import lokijs from './lib/lokijs.js';
 import generator from './api/generator.js';
 import { uiManager as a} from '@minecraft/server-ui';
 // ;
-system.runTimeout(()=>{
+// system.runTimeout(()=>{
     // OpenClanAPI.db.data = [];
     // OpenClanAPI.db.save();
     // let player = world.getPlayers().find(_=>_.name == "AnUwUFurry")
     // OpenClanAPI.createClan(player, "LEAF")
-},2);
+// },2);
 // generator.addGeneratorUpgrade(1720191503072, 2, "money", 20)
 // generator.addGeneratorUpgrade(1720191503072, 1, "money", 40)
 Player.prototype.info = function(msg) {

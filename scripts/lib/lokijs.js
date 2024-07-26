@@ -1016,10 +1016,7 @@ let b = {};
       // Hopefully, once this hits npm a browserify require of lokijs should scan the main file and detect this indexed adapter reference.
       Loki.prototype.getIndexedAdapter = function () {
         var adapter;
-  
-        if (typeof require === 'function') {
-          adapter = require("./loki-indexed-adapter.js");
-        }
+
   
         return adapter;
       };

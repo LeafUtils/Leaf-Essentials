@@ -26,4 +26,12 @@ class CustomCommands {
         cmd.data.subcommands.push({description,name})
         this.db.overwriteDataByID(cmd.id, cmd.data);
     }
+    addRunCommandAction(name, command) {
+        let doc = this.db.findFirst({name});
+        if(!doc) return;
+        doc.data.actions.push({type:"COMMAND",command});
+        this.db.overwriteDataByID(doc.id, doc.data);        
+    }
 }
+
+export default new CustomCommands();

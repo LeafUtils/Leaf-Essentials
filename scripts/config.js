@@ -16,6 +16,10 @@ export default {
         UIBuilderEditButton: "ui_builder_edit_button | Leaf/UIBuilder/EditButton",
         ConfigRoot: "config_menu_start_page | Leaf/Config/Root",
         ConfigMain: "config_menu_main_settings | Leaf/Config/Main",
+        Config: {
+            Clans: "Leaf/Config/Clans",
+            Modules: "Leaf/Config/Modules"
+        },
         ConfigCredits: "credits | Leaf/Config/Credits",
         ChestGuiRoot: "chest_gui_main_page | Leaf/ChestGUIs/Root",
         ChestGuiAdd: "chest_gui_create_ui | Leaf/ChestGUIs/Add",
