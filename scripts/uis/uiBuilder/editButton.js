@@ -9,8 +9,12 @@ uiManager.addUI(config.uiNames.UIBuilderEditButton, "Edit Button", (player, id, 
         let doc = uiBuilder.db.getByID(id);
         if(!doc) return;
         let button = doc.data.buttons[index];
-        uiManager.open(player, config.uiNames.UIBuilderAddButton, id, button.text, button.subtext, button.action, button.iconID, null, index);
+        uiManager.open(player, config.uiNames.UIBuilderAddButton, id, index);
     })
+    actionForm.button("§cBack\n§7Go back", null, (player)=>{
+        uiManager.open(player, config.uiNames.UIBuilderEditButtons, id);
+    })
+
 //player, id, defaultText=undefined, defaultSubtext=undefined, defaultAction=undefined, defaultIcon=undefined, error=null
     actionForm.button(`§cDelete`, `textures/azalea_icons/Delete`, (player)=>{
         let doc = uiBuilder.db.getByID(id);

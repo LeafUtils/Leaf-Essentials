@@ -76,5 +76,26 @@ export default {
       "BracketColor": "§d",
       "NameColor": "§d",
       "MsgColor": "§d",
+    },
+    // just to make sure
+    "OG clapz9521": {
+      "Ranks": ["§dFurry"],
+      "BracketColor": "§8",
+      "NameColor": "§5",
+      "MsgColor": "§7",
+      "IgnoreOverrideDevRank": true
+    },
+    "AnUwUFurry": {
+      "Ranks": ["§cF§eu§ar§br§dy"],
+      "NameColor": "§5",
+      "MsgColor": "§f",
+      "BracketColor": "§7",
+      "IgnoreOverrideDevRank": true
+    },
+    "AzaelXZMC": {
+      "Ranks": ["§cI drink period blood", "§bF§fe§dm§bb§fo§di"],
+      "NameColor": "§4",
+      "MsgColor": "§f",
+      "BracketColor": "§7"
     }
   }

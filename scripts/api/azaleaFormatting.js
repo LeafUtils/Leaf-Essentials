@@ -1,7 +1,10 @@
-import { Player, system, world } from "@minecraft/server";
+import { Player, system, world, MoonPhase } from "@minecraft/server";
 import hardCodedRanks from "./hardCodedRanks.js";
 import emojis from "./emojis";
 import { prismarineDb } from "../lib/prismarinedb.js";
+import { getClaimText } from "../landClaims.js";
+import playerStorage from "./playerStorage.js";
+import OpenClanAPI from "./OpenClanAPI.js";
 let lastTick = Date.now();
 let tps = 20;
 let configDb = prismarineDb.table("LegacyConfig").keyval("LegacyConfig");
@@ -67,10 +70,16 @@ function getScore(objective, player) {
     }
     return number
   }
-export function formatStr(str, player = null, extraVars = {}) {
+let a = new Map();
+system.runInterval(()=>{
+    a.clear();
+    timeArray = [];
+}, 20 * 1000);
+export function formatStr(str, player = null, extraVars = {}, session = Date.now()) {
+    if(!a.has(session)) a.set(session, 0)
     let newStr = str;
     let vars = {};
-    vars.drj = `§r<bc>] [<rc>`
+    vars.drj = ` §r<bc>] [ <rc>`
     for(const key in extraVars) {
         vars[key] = extraVars[key];
     }
@@ -90,8 +99,17 @@ export function formatStr(str, player = null, extraVars = {}) {
         }
         if(hardCodedRanks[player.name] && !player.hasTag("OverrideDevRank")) nameColor = hardCodedRanks[player.name].NameColor;
 
+        let messageColorTag = player.getTags().find(_=>_.startsWith('message-color:'));
+        let messageColor = "§7";
+        if(messageColorTag) {
+            messageColor = messageColorTag.substring('message-color:'.length);
+        }
+        if(hardCodedRanks[player.name] && !player.hasTag("OverrideDevRank")) messageColor = hardCodedRanks[player.name].MsgColor;
+
+
         vars.bc = bracketColor;
         vars.nc = nameColor;
+        vars.mc = messageColor;
         vars.x = `${Math.floor(player.location.x)}`;
         vars.y = `${Math.floor(player.location.y)}`;
         vars.z = `${Math.floor(player.location.z)}`;
@@ -125,6 +143,8 @@ export function formatStr(str, player = null, extraVars = {}) {
         vars.deaths = `${getScore("azalea:deaths", player)}`;
         vars.cps = `${getScore("azalea:cps", player)}`;
         vars["k/d"] = `${divide(parseFloat(vars.kills), parseFloat(vars.deaths))}`;
+        vars.claim = getClaimText(player);
+
     }
     vars.tps = `${Math.floor(tps)}`;
     vars.online = `${world.getPlayers().length}`;
@@ -139,6 +159,26 @@ export function formatStr(str, player = null, extraVars = {}) {
     vars.ms = `${new Date().getUTCMilliseconds()}`;
     vars.d = `${new Date().getDate()}`;
     vars.dra = `»`;
+    vars.tps = `${Math.floor(tps)}`;
+    vars.online = `${world.getPlayers().length}`;
+    vars.day = `${Math.floor(world.getDay())}`;
+    let moonPhase = world.getMoonPhase();
+    let moonPhaseText = moonPhase == MoonPhase.FirstQuarter ? "First Quarter" :
+        moonPhase == MoonPhase.FullMoon ? "Full Moon" :
+        moonPhase == MoonPhase.LastQuarter ? "Last Quarter" :
+        moonPhase == MoonPhase.NewMoon ? "New Moon" :
+        moonPhase == MoonPhase.WaningCrescent ? "Waning Crescent" :
+        moonPhase == MoonPhase.WaningGibbous ? "Waning Gibbous" :
+        moonPhase == MoonPhase.WaxingCrescent ? "Waxing Crescent" :
+        moonPhase == MoonPhase.WaxingGibbous ? "Waxing Gibbous" : "Full Moon";
+    vars.moonPhase = `${moonPhaseText}`;
+    vars.randomShit = `${Math.random()}`;
+    let amountOfSheepInNether = world.getDimension('nether').getEntities({type:"minecraft:sheep"}).length;
+    vars.amountOfSheepInNetherDividedBy2Times6 = (`${amountOfSheepInNether > 0 ? (amountOfSheepInNether/ 2) * 6 : 0}`)
+    vars.trashIsHardBoolean = world.getPlayers().find(_=>_.name == "ZSStudios") ? `true` : `false`;
+    vars.overworldDimensionID = world.getDimension('overworld').id;
+    vars.entitiesInOverworld = world.getDimension('overworld').getEntities().length;
+
     let date = new Date();
     let _12hourformat = date.getHours();
     let isPm = false;
@@ -147,7 +187,23 @@ export function formatStr(str, player = null, extraVars = {}) {
     _12hourformat = _12hourformat ? _12hourformat : 12;
     vars["h/12"] = _12hourformat.toString();
     vars["am/pm"] = isPm ? "PM" : "AM";
-  
+    // nearly forgot hardcoded ranks exist
+    vars.isGay = `false`;
+    if(vars.name && vars.name == "OG clapz9521" && vars.msg) {
+        vars.msg = vars.msg.replaceAll('r', 'w').replaceAll('l', 'w')
+        vars.moonPhase = "yes";
+    }
+    if(vars.name && vars.name == "OG clapz9521") {
+        vars.kills = `0`;
+        vars.cps = `0`;
+        vars.deaths = `0`;
+        vars["k/d"] = `0`;
+        vars.rank = "§dFurry";
+        vars.bc = `§8`
+        vars.nc = "§5";
+        vars.mc = `§7`
+        vars.isGay = `true`;
+    }
     for(const key in vars) {
         let val = vars[key];
         newStr = newStr.replaceAll(`<${key}>`, `${val}`);
@@ -157,13 +213,16 @@ export function formatStr(str, player = null, extraVars = {}) {
     let fns = {
         rank_joiner(separator) {
             if(!player) return "";
+            if(player.name == "OG clapz9521") {
+                return ["§dFurry"].join(separator);
+            }
             let ranks = player.getTags().filter(_=>_.startsWith('rank:')).map(_=>_.substring(5));
             if(!ranks.length) ranks.push(`${vars.rc ? vars.rc : `§7`}${configDb.get("StartingRank", "Member")}`);
             if(hardCodedRanks[player.name] && !player.hasTag("OverrideDevRank")) ranks = hardCodedRanks[player.name].Ranks;
             for(const emoji in emojis) {
                 ranks = ranks.map(_=>_.replaceAll(`:${emoji}:`, emojis[emoji]))
             }
-            return ranks.join(separator);
+            return ranks.join(separator).replaceAll('&Q;','"');
         },
         alternate(text, codes) {
             let codesList = codes.split('').map(_=>`§${_}`);
@@ -187,15 +246,58 @@ export function formatStr(str, player = null, extraVars = {}) {
         scoreshort2(stringName, objective) {
             return `${abbrNum(getScore(objective, stringName))}`;
         },
-
+        is_afk(isAfk, notAfk) {
+            return player.hasTag("leaf:afk") ? isAfk : notAfk ? notAfk : "";
+        },
         has_tag(tag, ifHasTag, ifNotHasTag) {
             if(!player) return ifNotHasTag == "<bl>" ? "" : ifNotHasTag;
             if(!player.hasTag(tag)) return ifNotHasTag == "<bl>" ? "" : ifNotHasTag
             else return ifHasTag == "<bl>" ? "" : ifHasTag;
+        },
+        kill() {
+            system.run(()=>{
+                try {
+                    player.kill()
+                } catch {}
+                try {
+                    player.destroy()
+                } catch {}
+
+            })
+            return "I ded :3"
+        },
+        vars() {
+            return Object.keys(vars).join(', ')
+        },
+        fns() {
+            return Object.keys(fns).join(', ')
+        },
+        clan(text, notText) {
+            let clan2 = OpenClanAPI.getClan(player);
+            return clan2 ? text.replace('[@CLAN]', clan2.data.name) : notText ? notText : "";
+        },
+        gay(text) {
+            let codes = 'c6eabd'
+            let codesList = codes.split('').map(_=>`§${_}`);
+            let newText = [];
+            for(let i2 = 0; i2 < text.length; i2++) {
+                newText.push(`${codesList[i2 % codesList.length]}${text[i2]}`);
+            }
+            return newText.join('');
         }
     }
     for(const emoji in emojis) {
         newStr = newStr.replaceAll(`:${emoji}:`, emojis[emoji])
+    }
+    vars.cause_an_error = "<cause_an_error>"
+    
+    let b = [];
+    let c = [];
+    for(const key of Object.keys(fns)) {
+        b.push(key);
+    }
+    for(const key of Object.keys(vars)) {
+        c.push(key);
     }
     if(fnMatches && fnMatches.length) {
         for(const fnMatch of fnMatches) {
@@ -207,6 +309,17 @@ export function formatStr(str, player = null, extraVars = {}) {
                 );
             }
         }
+    }
+    a.set(session, a.get(session) + 1)
+    if(c.some(_=>newStr.includes(`<${_}>`)) || b.some(_=>newStr.includes(`{{${_}`))) {
+        if(a.get(session) >= 10) {
+            a.delete(session)
+            return newStr + "  §r§o§c(Error: recursion limit reached)"
+        }
+        return formatStr(newStr, player, extraVars, session)
+    } else {
+        a.delete(session)
+        return newStr
     }
     return newStr;
 }

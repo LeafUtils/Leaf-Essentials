@@ -12,19 +12,26 @@ uiManager.addUI(config.uiNames.ChestGuiEditItem, "Edit an item in a chest GUI", 
     let form = new ActionForm();
     //player, id, defaultItemName = "", defaultIconID = "", defaultIconLore = "", defaultAction = "", defaultAmount = 1, defaultRow = 1, defaultColumn = 1, error = "", index = -1
     form.button("§aEdit\n§7Edit properties of the item", icons.resolve("2.2/document"), (player)=>{
+        if(chest.data.advanced) {
+            uiManager.open(
+                player,
+                config.uiNames.ChestGuiAddItemAdvanced,
+                id,
+                0,
+                0,
+                chest.data.icons[index],
+                index
+
+            )
+            return;
+        }
         let [row,col] = common.slotIdToRowCol(chest.data.icons[index].slot);
         uiManager.open(
             player,
             config.uiNames.ChestGuiAddItem,
             id,
-            chest.data.icons[index].name,
-            chest.data.icons[index].iconID,
-            chest.data.icons[index].lore.join(','),
-            chest.data.icons[index].action,
-            chest.data.icons[index].amount,
             row,
             col,
-            "",
             index
         );
     });

@@ -13,9 +13,14 @@ export default {
         }
     },
     error: "§c§lERROR §8>> §r§7%s",
+    success: "§a§lSUCCESS §8>> §r§7%s",
+    info: "§b§lINFO §8>> §r§7%s",
+    warn: "§6§lWARN §8>> §r§7%s",
+    // : "",
     commands: {
         errors: {
-            notfound: "Command not found."
+            notfound: "Command not found.",
+            noperms: "You do not have permission to run this command. You require: §c%s"
         }
     },
     chestguis: {
