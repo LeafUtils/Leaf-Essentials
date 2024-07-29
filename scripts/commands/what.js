@@ -1,6 +1,7 @@
 import commandManager from "../api/commands/commandManager";
 import { prismarineDb } from "../lib/prismarinedb";
-let db = prismarineDb.keyval("WhatList");
+import { SegmentedStoragePrismarine } from "../prismarineDbStorages/segmented";
+let db = prismarineDb.customStorage("WhatList", SegmentedStoragePrismarine).keyval("WhatList");
 let theme = {
     category: "§8",
     description: "§7",

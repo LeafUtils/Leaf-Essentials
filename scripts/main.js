@@ -15,6 +15,8 @@ import './uis/uiBuilder/addButton';
 import './uis/uiBuilder/editButton';
 import './uis/config/root'
 import './uis/config/main'
+import './uis/config/misc'
+import './uis/config/chatrankFormat.js'
 import './uis/config/credits.js'
 import './uis/config/clans/clansConfigRoot.js'
 import './uis/config/modules.js'
@@ -44,7 +46,8 @@ import './uis/currencyEditor/add';
 import './crates/main';
 import './uis/basic/basicConfirmation.js';
 import './features/chestLocking'
-import './commands/bind.js'
+import './commands/bind.js';
+import './uis/crates/root.js'
 import icons from './api/icons';
 import azaleaIconPack from './icon_packs/azalea';
 import commandManager from './api/commands/commandManager';
@@ -68,6 +71,7 @@ import './api/iconViewer/root.js'
 import './uis/shop/root.js';
 import './uis/dailyrewards/rewards.js';
 import './uis/shop/admin.js'
+import './commands/what'
 import './uis/shop/categoryAdmin.js';
 import './uis/basic/itemSelect.js';
 import './uis/help.js'
@@ -92,15 +96,7 @@ import itemdb from './api/itemdb.js';
 import './uis/generatorUI.js'
 import generator from './api/generator.js';
 import { uiManager as a} from '@minecraft/server-ui';
-// ;
-// system.runTimeout(()=>{
-    // OpenClanAPI.db.data = [];
-    // OpenClanAPI.db.save();
-    // let player = world.getPlayers().find(_=>_.name == "AnUwUFurry")
-    // OpenClanAPI.createClan(player, "LEAF")
-// },2);
-// generator.addGeneratorUpgrade(1720191503072, 2, "money", 20)
-// generator.addGeneratorUpgrade(1720191503072, 1, "money", 40)
+
 Player.prototype.info = function(msg) {
     this.sendMessage(translation.getTranslation(this, "info", msg));
 }
@@ -131,20 +127,6 @@ commandManager.addSubcommand("land", "claim",{description:"Claim land"},({msg,ar
     if(!res) return msg.sender.error("Could not create claim")
     msg.sender.success("Successfully created claim!")
 })
-// commandManager.addSubcommand("add",{description:"Add person to edit a chunk"},({msg,args})=>{
-    // let player;
-    // for(const player2 of world.getPlayers()) {
-    //     if(player2.name.toLowerCase() == args.join(' ').toLowerCase()) player = player2;
-    // }
-    // if(!player) return msg.sender.error("Player not found");
-    // if(!isOwner(msg.sender, vec3ToChunkCoordinates(msg.sender.location), true)) return msg.sender.error("You are not the owner of this claim");
-
-    // let res = createLandClaim(msg.sender);
-    // if(!res) return msg.sender.error("Could not create claim")
-    // msg.sender.success("Successfully created claim!")
-// })
-// OpenClanAPI.createClan(world.getPlayers().find(_=>_.name == "AnUwUFurry"), "LEAF");
-
 commandManager.addCommand("pay",{description:"Pay command"},({msg,args})=>{
     msg.sender.success("Close chat and move to open UI");
     let ticks = 0;
@@ -196,9 +178,6 @@ commandManager.addCommand("shop",{description:"Open shop UI"},({msg,args})=>{
         }
     });
 })
-// import './matrix-anticheat/anticheat'
-// world.sendMessage(performance.now())
-// icons.install(azaleaIconPack, true)
 icons.install(leafIconPack);
 icons.install(leafIconPack2, true);
 function betterArgs(myString) {
@@ -233,22 +212,7 @@ system.afterEvents.scriptEventReceive.subscribe(e=>{
     }
 })
 let recordsDb = prismarineDb.customStorage("Records", SegmentedStoragePrismarine);
-// world.sendMessage(JSON.stringify(recordsDb.data).length.toString())
-// world.afterEvents.playerSpawn.subscribe(e=>{
-//     if(!e.initialSpawn) return;
-//     recordsDb.insertDocument({
-//         type: "JOIN",
-//         at: Date.now(),
-//         player: e.player.name
-//     })
-// })
-// world.afterEvents.playerLeave.subscribe(e=>{
-//     recordsDb.insertDocument({
-//         type: "LEAVE",
-//         at: Date.now(),
-//         player: e.playerName
-//     })
-// })
+
 OpenClanAPI.onClanMessage((player2, clanID, message)=>{
     let clan = OpenClanAPI.db.getByID(clanID);
     let pre = playerStorage.getID(player2) == clan.data.owner ? ":small_diamond: " : ""
@@ -368,45 +332,6 @@ world.beforeEvents.playerLeave.subscribe(e=>{
 system.run(()=>{
     let defaultCurrency = prismarineDb.economy.getCurrency("default");
     if(defaultCurrency && defaultCurrency.symbol == "$") {
-        prismarineDb.economy.editSymbol(defaultCurrency.scoreboard, emojis.coins);
+        prismarineDb.economy.editSymbol(defaultCurrency.scoreboard, emojis.coins2);
     }
 })
-// commandManager.addCommand("test", {}, ({msg,args})=>{
-//     leaderboardHandler.addLeaderboard("money", msg.sender.location)
-// })
-// world.afterEvents.playerSpawn.subscribe(e=>{
-//     if(http.player && config.DiscordLoggingWebhook) {
-//         http.makeRequest({
-//             method: 'post',
-//             url: config.DiscordLoggingWebhook,
-//             data: {
-//                 avatar_url: config.Discord.AvatarURL,
-//                 username: config.Discord.Username,
-//                 embeds: [
-//                     {
-//                         color: 0x8BC34A,
-//                         description: `**\`${e.player.name}\`** has joined`
-//                     }
-//                 ]
-//             }
-//         })
-//     }
-// })
-// world.afterEvents.playerLeave.subscribe(e=>{
-//     if(http.player && config.DiscordLoggingWebhook) {
-//         http.makeRequest({
-//             method: 'post',
-//             url: config.DiscordLoggingWebhook,
-//             data: {
-//                 avatar_url: config.Discord.AvatarURL,
-//                 username: config.Discord.Username,
-//                 embeds: [
-//                     {
-//                         color: 0xFF7043,
-//                         description: `**\`${e.playerName}\`** has left`
-//                     }
-//                 ]
-//             }
-//         })
-//     }
-// })

@@ -93,8 +93,11 @@ uiManager.addUI(config.uiNames.ConfigMain, "Config Main", (player)=>{
     // form.button(`§l§qAuction House\n§7Manage auction house`, icons.resolve("Packs/Asteroid/random19"), (player)=>{
 
     // })
-    form.button(`§l§bClans\n§r§7Configure clans`, icons.resolve("leaf/image-480"), (player)=>{
+    form.button(`§l§cClans\n§r§7Configure clans`, icons.resolve("leaf/image-480"), (player)=>{
         uiManager.open(player, config.uiNames.Config.Clans)
+    })
+    form.button(`§l§6Crates\n§r§7Configure crates`, icons.resolve("leaf/image-480"), (player)=>{
+        uiManager.open(player, config.uiNames.Crates.Root)
     })
     form.button(`§l§eEvents\n§r§7Events`, icons.resolve("leaf/image-478"), (player)=>{
         uiManager.open(player, config.uiNames.Events.EventsRoot)

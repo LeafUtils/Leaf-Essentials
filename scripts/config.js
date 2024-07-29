@@ -1,4 +1,7 @@
 export default {
+    defaults: {
+        chatformat: `{{is_afk "§7AFK "}}{{clan "<bc>[§r§7<nc>[@CLAN]§r<bc>] "}}{{has_tag staffchat "<bc>[<nc> StaffChat §r<bc>] " "<bl>"}}§r<bc>[ <rc>{{rank_joiner "<drj>"}}§r<bc> ] §r<nc><name> §r§l<bc><dra> §r<mc><msg>`
+    },
     tableNames: {
         uis: "uis"
     },
@@ -8,6 +11,9 @@ export default {
         openDefault: "leafgui:",
     },
     uiNames: {
+        Crates: {
+            Root: "crates_root | Leaf/Crates/Root"
+        },
         UIBuilderRoot: "ui_builder_main_page | Leaf/UIBuilder/Root",
         UIBuilderAdd: "ui_builder_create_ui | Leaf/UIBuilder/Add",
         UIBuilderEdit: "ui_builder_edit_ui | Leaf/UIBuilder/Edit",
@@ -17,8 +23,10 @@ export default {
         ConfigRoot: "config_menu_start_page | Leaf/Config/Root",
         ConfigMain: "config_menu_main_settings | Leaf/Config/Main",
         Config: {
-            Clans: "Leaf/Config/Clans",
-            Modules: "Leaf/Config/Modules"
+            Clans: "clans_config | Leaf/Config/Clans",
+            Modules: "modules_config | Leaf/Config/Modules",
+            Misc: "misc_config | Leaf/Config/Misc",
+            ChatrankFormat: "chatformat_config | Leaf/Config/Misc/Chatrankformat"
         },
         ConfigCredits: "credits | Leaf/Config/Credits",
         ChestGuiRoot: "chest_gui_main_page | Leaf/ChestGUIs/Root",

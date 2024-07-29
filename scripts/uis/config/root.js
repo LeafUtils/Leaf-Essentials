@@ -38,7 +38,9 @@ uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
     actionForm.button(`§l§nMain Settings\n§r§7Main settings for leaf`, icons.resolve("Packs/Asteroid/slash"), (player)=>{
         uiManager.open(player, config.uiNames.ConfigMain)
     })
-    // actionForm.button(`§l§bMisc Settings\n§r§7Miscellaneous Settings`, icons.resolve("Packs/Asteroid/dev"))
+    actionForm.button(`§l§bMisc Settings\n§r§7Miscellaneous Settings`, icons.resolve("Packs/Asteroid/dev"), (player)=>{
+        uiManager.open(player, config.uiNames.Config.Misc)
+    })
     actionForm.button(`§l§aModules\n§r§7Enable/Disable Modules`, icons.resolve("leaf/image-669"), (player)=>{
         uiManager.open(player, config.uiNames.Config.Modules);
     })
