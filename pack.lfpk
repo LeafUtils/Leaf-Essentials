@@ -1,0 +1,20 @@
+leaf-packer-version 1
+
+# Set the config variables
+set rpPath C:\Users\Zip Tie\Downloads\bedrock-server-1.21.0.03\development_resource_packs\Leaf-Essentials-RP
+set bpPath C:\Users\Zip Tie\Downloads\bedrock-server-1.21.0.03\development_behavior_packs\Leaf-Essentials
+set outPath C:\Users\Zip Tie\Downloads\bedrock-server-1.21.0.03\development_behavior_packs\Leaf-Essentials\packed\leaf.mcaddon
+
+# Create the packs
+pack rpOutputFile rpPath
+pack bpOutputFile bpPath
+
+# Create the mc addon
+create-mcaddon leaf
+
+# Add the resource and behavior pack to the mc addon
+add-to-mcaddon leaf rpOutputFile
+add-to-mcaddon leaf bpOutputFile
+
+# Output the mcaddon
+mcaddon-output leaf outPath
