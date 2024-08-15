@@ -4,6 +4,23 @@ import { ActionForm } from "../lib/form_func";
 import uiManager from "../uiManager";
 let pages = [
     {
+        path: "292949402-icantfindaname",
+        title: "Welcome to Leaf V0.2.0-RC1",
+        icon: "Packs/Asteroid/dev",
+        text: [
+            `§aWelcome to Leaf V0.2.0-RC1`,
+            `- Changed PrismarineDB version to v10.0`,
+            `- Added clans`,
+            `- Added some toggles :3`,
+            `- Added chat rank formats`,
+            `- Added default ranks (finally using the PrismarineDB color API for something)`,
+            `- Fixed for 1.21.20 (worst mc update i might actually quit)`
+        ],
+        links: [
+            `home`
+        ]
+    },
+    {
         path: "home",
         title: "Help Home",
         icon: "leaf/image-1191",
@@ -14,7 +31,8 @@ let pages = [
             `Click what page you want to read below`
         ],
         links: [
-            `ui_builder/root`
+            `ui_builder/root`,
+            `292949402-icantfindaname`
         ]
     },
     {

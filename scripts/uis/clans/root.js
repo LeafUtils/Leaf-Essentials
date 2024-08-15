@@ -4,7 +4,9 @@ import { ActionForm } from '../../lib/form_func';
 import icons from '../../api/icons';
 import OpenClanAPI from "../../api/OpenClanAPI";
 import playerStorage from "../../api/playerStorage";
+import configAPI from "../../api/config/configAPI";
 uiManager.addUI(config.uiNames.Clans.Root, "Clans Root", (player)=>{
+    if(!configAPI.getProperty("Clans")) return player.sendMessage("Clans are not enabled");
     let form = new ActionForm();
     let clan = OpenClanAPI.getClan(player);
     form.button(`§dClan Invites\n§7View invites to clans`, `textures/amethyst_icons/Utilities/envelope`, (player)=>{

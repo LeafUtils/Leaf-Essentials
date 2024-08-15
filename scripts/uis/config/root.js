@@ -4,7 +4,7 @@ import { ActionForm } from "../../lib/form_func";
 import { prismarineDb } from "../../lib/prismarinedb";
 import http from "../../networkingLibs/currentNetworkingLib";
 import uiManager from "../../uiManager";
-export let targetLeafDBVersion = 5.2
+export let targetLeafDBVersion = 10.0
 
 uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
     let actionForm = new ActionForm();
@@ -38,8 +38,18 @@ uiManager.addUI(config.uiNames.ConfigRoot, "Config Root", (player)=>{
     actionForm.button(`§l§nMain Settings\n§r§7Main settings for leaf`, icons.resolve("Packs/Asteroid/slash"), (player)=>{
         uiManager.open(player, config.uiNames.ConfigMain)
     })
+<<<<<<< Updated upstream
     // actionForm.button(`§l§bMisc Settings\n§r§7Miscellaneous Settings`, icons.resolve("Packs/Asteroid/dev"))
     actionForm.button(`§l§aModules\n§r§7Enable/Disable Modules`, icons.resolve("leaf/image-669"), (player)=>{
+=======
+    // actionForm.button(`§l§dAdvanced Settings\n§r§7Very advanced fr fr`, icons.resolve("leaf/image-515"), (player)=>{
+    //     uiManager.open(player, config.uiNames.ConfigMain)
+    // })
+    actionForm.button(`§l§bMisc Settings\n§r§7Miscellaneous Settings`, icons.resolve("Packs/Asteroid/dev"), (player)=>{
+        uiManager.open(player, config.uiNames.Config.Misc)
+    })
+    actionForm.button(`§l§aModules\n§r§7Enable/Disable Modules`, icons.resolve("leaf/image-668"), (player)=>{
+>>>>>>> Stashed changes
         uiManager.open(player, config.uiNames.Config.Modules);
     })
     // actionForm.button(`§l§dModeration Settings\n§r§7Change moderation settings`, icons.resolve("leaf/image-613"))

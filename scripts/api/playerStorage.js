@@ -16,6 +16,7 @@ const generateUUID = () => {
       return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
     });
   };
+let ids = {};
 class SegmentedStoragePrismarine {
     load(table) {
         let segmentCount = 0;
@@ -60,15 +61,21 @@ class PlayerStorage {
         this.rewardsKeyval = this.db.keyval("rewards");
     }
     getID(player) {
-        let entityTable = prismarineDb.entityTable("Data", player);
-        let keyval = entityTable.keyval("_data");
-        let id = keyval.get("id")
-        if(!id) {
-            let uuid = generateUUID();
-            keyval.set("id", uuid);
-            return uuid;
+        if(!ids[player.id]) {
+            let entityTable = prismarineDb.entityTable("Data", player);
+            let keyval = entityTable.keyval("_data");
+            let id = keyval.get("id")
+            if(!id) {
+                let uuid = generateUUID();
+                keyval.set("id", uuid);
+                ids[player.id] = uuid;
+                return uuid;
+            } else {
+                ids[player.id] = id;
+                return id;
+            }
         } else {
-            return id;
+            return ids[player.id];
         }
     }
     getScore(player, objective) {

@@ -3,8 +3,10 @@ import config from "../../config";
 import { ModalForm } from "../../lib/form_func";
 import uiManager from "../../uiManager";
 import OpenClanAPI from "../../api/OpenClanAPI";
+import configAPI from "../../api/config/configAPI";
 
 uiManager.addUI(config.uiNames.Clans.Invite, "Clan Invite", (player, clanID)=>{
+    if(!configAPI.getProperty("Clans")) return player.sendMessage("Clans are not enabled");
     let modal = new ModalForm();
     let players = world.getPlayers();
     modal.dropdown("Player", players.map(_=>{

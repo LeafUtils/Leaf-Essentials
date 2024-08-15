@@ -130,3 +130,6 @@ dist
 .pnp.*
 package-lock.json
 Leaf-V0.1.1.mcpack
+*.mcaddon
+*.mcpack
+*.mcpack

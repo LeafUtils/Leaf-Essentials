@@ -6,6 +6,7 @@ import { prismarineDb } from "../../lib/prismarinedb";
 import uiManager from "../../uiManager";
 
 uiManager.addUI(config.uiNames.Clans.Create, "Create a clan", (player, defaultValue = null, error = null)=>{
+    if(!configAPI.getProperty("Clans")) return player.sendMessage("Clans are not enabled");
     if(configAPI.getProperty("clans:enable_pay_to_create")) {
         let amount = prismarineDb.economy.getMoney(player, configAPI.getProperty("clans:clan_price_currency"));
         if(amount < configAPI.getProperty("clans:clan_price")) {

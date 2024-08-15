@@ -1,5 +1,5 @@
 {
-	"format_version": "1.16.100",
+	"format_version": "1.20.20",
 	"minecraft:item": {
 		"description": {
 			"identifier": "leaf:config_ui"

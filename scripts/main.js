@@ -1,6 +1,7 @@
 import { world, system, ScriptEventSource, Player } from '@minecraft/server';
 import uiManager from './uiManager.js';
 import config from './config';
+import './api/Scriptevents/switchSidebar.js'
 import './uis/uiBuilder/root';
 import './test'
 import './uis/clans/root.js'
@@ -71,6 +72,8 @@ import './uis/shop/admin.js'
 import './uis/shop/categoryAdmin.js';
 import './uis/basic/itemSelect.js';
 import './uis/help.js'
+import './uis/config/advanced.js'
+import './uis/playerContentManager/editor/root.js';
 import './uis/basic/numberSelector.js';
 import './uis/dailyrewards/addReward.js';
 import './uis/dailyrewards/claim.js';

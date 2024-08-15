@@ -2,9 +2,11 @@ import { BlockPermutation, EquipmentSlot, system, world } from "@minecraft/serve
 import { isVec3, prismarineDb } from "./lib/prismarinedb";
 import * as storage from './prismarineDbStorages/segmented';
 import playerStorage from './api/playerStorage';
+import configAPI from "./api/config/configAPI";
 let claimMap = new Map();
 let claimMap2 = new Map();
 export function getClaimText(player) {
+    if(!configAPI.getProperty("LandClaims")) return "§cClaims Disabled";
     return claimMap2.has(player.id) ? claimMap2.get(player.id) : "§6Wilderness"
 }
 let claimDb = prismarineDb.customStorage("Claims", storage.SegmentedStoragePrismarine);
@@ -21,6 +23,7 @@ export function vec3ToChunkCoordinates(vec3) {
     };
 }
 export function createLandClaim(player) {
+    if(!configAPI.getProperty("LandClaims")) return false;
     let chunkCoordinates = vec3ToChunkCoordinates(player.location);
     if(keyval.has(`claim:${chunkCoordinates.x},${chunkCoordinates.z}:${player.dimension.id}`)) return false;
     keyval.set(`claim:${chunkCoordinates.x},${chunkCoordinates.z}:${player.dimension.id}`, {
@@ -30,6 +33,7 @@ export function createLandClaim(player) {
     return true;
 }
 export function isOwner(player, chunk, strict = false) {
+    if(!configAPI.getProperty("LandClaims")) return true;
     if(player.hasTag("claim-bypass")) return true;
     let playerID =  playerStorage.getID(player);
     let claimKey = `claim:${chunk.x},${chunk.z}:${player.dimension.id}`;
@@ -39,6 +43,7 @@ export function isOwner(player, chunk, strict = false) {
     return false;
 }
 export function setClaimProperty(player, chunk, key, val) {
+    if(!configAPI.getProperty("LandClaims")) return null;
     let claimKey = `claim:${chunk.x},${chunk.z}:${player.dimension.id}`;
     if(!keyval.has(claimKey)) return null;
     let claim = keyval.get(claimKey);
@@ -46,6 +51,7 @@ export function setClaimProperty(player, chunk, key, val) {
     keyval.set(claimKey, claim);
 }
 export function getClaimProperty(player, chunk, key) {
+    if(!configAPI.getProperty("LandClaims")) return null;
     let claimKey = `claim:${chunk.x},${chunk.z}:${player.dimension.id}`;
     if(!keyval.has(claimKey)) return null;
     let claim = keyval.get(claimKey);
@@ -59,6 +65,7 @@ function getMaxY(x, z) {
     }
 }
 function loop() {
+    if(!configAPI.getProperty("LandClaims")) return;
     for(const player of world.getPlayers()) {
         // try {
         //     // world.sendMessage(player.getComponent('equippable').getEquipmentSlot(EquipmentSlot.Offhand).getItem().typeId)

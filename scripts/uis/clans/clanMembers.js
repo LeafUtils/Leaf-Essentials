@@ -1,3 +1,4 @@
+import configAPI from "../../api/config/configAPI";
 import OpenClanAPI from "../../api/OpenClanAPI";
 import playerStorage from "../../api/playerStorage";
 import config from "../../config";
@@ -5,6 +6,7 @@ import { ActionForm } from "../../lib/form_func";
 import uiManager from "../../uiManager";
 
 uiManager.addUI(config.uiNames.Clans.ClanMembers, "Clan members", (player, clanID)=>{
+    if(!configAPI.getProperty("Clans")) return player.sendMessage("Clans are not enabled");
     let clan = OpenClanAPI.db.getByID(clanID);
     if(clan) {
         let form = new ActionForm();

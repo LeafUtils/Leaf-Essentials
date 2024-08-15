@@ -4,22 +4,6 @@ let leafIconPack = new Map([
     ["pack_namespace", "leaf"],
     ["pack_data", new Map([
         [
-            "image-001",
-            {
-                icon: "textures/leaf_icons/image-001",
-                name: "Minecraft Wiki",
-                category: "Misc"
-            }
-        ],
-        [
-            "image-002",
-            {
-                icon: "textures/leaf_icons/image-002",
-                name: "Pickaxe 1",
-                category: "Items"
-            }
-        ],
-        [
             "image-003",
             {
                 icon: "textures/leaf_icons/image-003",
@@ -66,14 +50,6 @@ let leafIconPack = new Map([
                 icon: "textures/leaf_icons/image-008",
                 name: "Bow 3",
                 category: "Items"
-            }
-        ],
-        [
-            "image-009",
-            {
-                icon: "textures/leaf_icons/image-009",
-                name: "Random 2",
-                category: "Misc"
             }
         ],
         [
@@ -141,14 +117,6 @@ let leafIconPack = new Map([
             }
         ],
         [
-            "image-018",
-            {
-                icon: "textures/leaf_icons/image-018",
-                name: "Random 5",
-                category: "Misc"
-            }
-        ],
-        [
             "image-019",
             {
                 icon: "textures/leaf_icons/image-019",
@@ -165,14 +133,6 @@ let leafIconPack = new Map([
             },
         ],
         [
-            "image-021",
-            {
-                icon: "textures/leaf_icons/image-021",
-                name: "Random 7",
-                category: "Misc"
-            }
-        ],
-        [
             "image-022",
             {
                 icon: "textures/leaf_icons/image-022",
@@ -181,26 +141,10 @@ let leafIconPack = new Map([
             }
         ],
         [
-            "image-023",
-            {
-                icon: "textures/leaf_icons/image-023",
-                name: "Random 8",
-                category: "Misc"
-            }
-        ],
-        [
             "image-024",
             {
                 icon: "textures/leaf_icons/image-024",
                 name: "Bow 5",
-                category: "Items"
-            }
-        ],
-        [
-            "image-025",
-            {
-                icon: "textures/leaf_icons/image-025",
-                name: "Bow 6",
                 category: "Items"
             }
         ],
@@ -241,20 +185,12 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-030"
         ],
         [
-            "image-031",
-            "textures/leaf_icons/image-031"
-        ],
-        [
             "image-032",
             "textures/leaf_icons/image-032"
         ],
         [
             "image-033",
             "textures/leaf_icons/image-033"
-        ],
-        [
-            "image-034",
-            "textures/leaf_icons/image-034"
         ],
         [
             "image-035",
@@ -289,20 +225,12 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-042"
         ],
         [
-            "image-043",
-            "textures/leaf_icons/image-043"
-        ],
-        [
             "image-044",
             "textures/leaf_icons/image-044"
         ],
         [
             "image-045",
             "textures/leaf_icons/image-045"
-        ],
-        [
-            "image-046",
-            "textures/leaf_icons/image-046"
         ],
         [
             "image-047",
@@ -357,16 +285,8 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-059"
         ],
         [
-            "image-060",
-            "textures/leaf_icons/image-060"
-        ],
-        [
             "image-061",
             "textures/leaf_icons/image-061"
-        ],
-        [
-            "image-062",
-            "textures/leaf_icons/image-062"
         ],
         [
             "image-063",
@@ -381,20 +301,12 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-065"
         ],
         [
-            "image-066",
-            "textures/leaf_icons/image-066"
-        ],
-        [
             "image-067",
             "textures/leaf_icons/image-067"
         ],
         [
             "image-068",
             "textures/leaf_icons/image-068"
-        ],
-        [
-            "image-069",
-            "textures/leaf_icons/image-069"
         ],
         [
             "image-070",
@@ -443,10 +355,6 @@ let leafIconPack = new Map([
         [
             "image-081",
             "textures/leaf_icons/image-081"
-        ],
-        [
-            "image-082",
-            "textures/leaf_icons/image-082"
         ],
         [
             "image-083",
@@ -537,20 +445,8 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-088"
         ],
         [
-            "image-0880",
-            "textures/leaf_icons/image-0880"
-        ],
-        [
             "image-0881",
             "textures/leaf_icons/image-0881"
-        ],
-        [
-            "image-0882",
-            "textures/leaf_icons/image-0882"
-        ],
-        [
-            "image-0883",
-            "textures/leaf_icons/image-0883"
         ],
         [
             "image-0884",
@@ -559,10 +455,6 @@ let leafIconPack = new Map([
         [
             "image-0885",
             "textures/leaf_icons/image-0885"
-        ],
-        [
-            "image-0886",
-            "textures/leaf_icons/image-0886"
         ],
         [
             "image-0887",
@@ -579,14 +471,6 @@ let leafIconPack = new Map([
         [
             "image-089",
             "textures/leaf_icons/image-089"
-        ],
-        [
-            "image-0890",
-            "textures/leaf_icons/image-0890"
-        ],
-        [
-            "image-0891",
-            "textures/leaf_icons/image-0891"
         ],
         [
             "image-0892",
@@ -617,16 +501,8 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-0898"
         ],
         [
-            "image-0899",
-            "textures/leaf_icons/image-0899"
-        ],
-        [
             "image-090",
             "textures/leaf_icons/image-090"
-        ],
-        [
-            "image-0900",
-            "textures/leaf_icons/image-0900"
         ],
         [
             "image-0901",
@@ -701,10 +577,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-0917"
         ],
         [
-            "image-0918",
-            "textures/leaf_icons/image-0918"
-        ],
-        [
             "image-0919",
             "textures/leaf_icons/image-0919"
         ],
@@ -729,10 +601,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-0923"
         ],
         [
-            "image-0924",
-            "textures/leaf_icons/image-0924"
-        ],
-        [
             "image-0925",
             "textures/leaf_icons/image-0925"
         ],
@@ -749,20 +617,12 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-0928"
         ],
         [
-            "image-0929",
-            "textures/leaf_icons/image-0929"
-        ],
-        [
             "image-093",
             "textures/leaf_icons/image-093"
         ],
         [
             "image-0930",
             "textures/leaf_icons/image-0930"
-        ],
-        [
-            "image-0931",
-            "textures/leaf_icons/image-0931"
         ],
         [
             "image-0932",
@@ -885,10 +745,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-0959"
         ],
         [
-            "image-096",
-            "textures/leaf_icons/image-096"
-        ],
-        [
             "image-0960",
             "textures/leaf_icons/image-0960"
         ],
@@ -933,14 +789,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-097"
         ],
         [
-            "image-0970",
-            "textures/leaf_icons/image-0970"
-        ],
-        [
-            "image-0971",
-            "textures/leaf_icons/image-0971"
-        ],
-        [
             "image-0972",
             "textures/leaf_icons/image-0972"
         ],
@@ -957,10 +805,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-0975"
         ],
         [
-            "image-0976",
-            "textures/leaf_icons/image-0976"
-        ],
-        [
             "image-0977",
             "textures/leaf_icons/image-0977"
         ],
@@ -971,10 +815,6 @@ let leafIconPack = new Map([
         [
             "image-0979",
             "textures/leaf_icons/image-0979"
-        ],
-        [
-            "image-098",
-            "textures/leaf_icons/image-098"
         ],
         [
             "image-0980",
@@ -1089,10 +929,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-1005"
         ],
         [
-            "image-1006",
-            "textures/leaf_icons/image-1006"
-        ],
-        [
             "image-1007",
             "textures/leaf_icons/image-1007"
         ],
@@ -1101,28 +937,12 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-1008"
         ],
         [
-            "image-1009",
-            "textures/leaf_icons/image-1009"
-        ],
-        [
             "image-101",
             "textures/leaf_icons/image-101"
         ],
         [
-            "image-1010",
-            "textures/leaf_icons/image-1010"
-        ],
-        [
-            "image-1011",
-            "textures/leaf_icons/image-1011"
-        ],
-        [
             "image-1012",
             "textures/leaf_icons/image-1012"
-        ],
-        [
-            "image-1013",
-            "textures/leaf_icons/image-1013"
         ],
         [
             "image-1014",
@@ -1139,10 +959,6 @@ let leafIconPack = new Map([
         [
             "image-1017",
             "textures/leaf_icons/image-1017"
-        ],
-        [
-            "image-1018",
-            "textures/leaf_icons/image-1018"
         ],
         [
             "image-1019",
@@ -1193,20 +1009,8 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-1029"
         ],
         [
-            "image-103",
-            "textures/leaf_icons/image-103"
-        ],
-        [
-            "image-1030",
-            "textures/leaf_icons/image-1030"
-        ],
-        [
             "image-1031",
             "textures/leaf_icons/image-1031"
-        ],
-        [
-            "image-1032",
-            "textures/leaf_icons/image-1032"
         ],
         [
             "image-1033",
@@ -1357,10 +1161,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-1066"
         ],
         [
-            "image-1067",
-            "textures/leaf_icons/image-1067"
-        ],
-        [
             "image-1068",
             "textures/leaf_icons/image-1068"
         ],
@@ -1495,10 +1295,6 @@ let leafIconPack = new Map([
         [
             "image-1099",
             "textures/leaf_icons/image-1099"
-        ],
-        [
-            "image-110",
-            "textures/leaf_icons/image-110"
         ],
         [
             "image-1100",
@@ -1749,20 +1545,8 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-1157"
         ],
         [
-            "image-1158",
-            "textures/leaf_icons/image-1158"
-        ],
-        [
             "image-1159",
             "textures/leaf_icons/image-1159"
-        ],
-        [
-            "image-116",
-            "textures/leaf_icons/image-116"
-        ],
-        [
-            "image-1160",
-            "textures/leaf_icons/image-1160"
         ],
         [
             "image-1161",
@@ -1823,10 +1607,6 @@ let leafIconPack = new Map([
         [
             "image-1174",
             "textures/leaf_icons/image-1174"
-        ],
-        [
-            "image-1175",
-            "textures/leaf_icons/image-1175"
         ],
         [
             "image-1176",
@@ -1909,10 +1689,6 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-1193"
         ],
         [
-            "image-1194",
-            "textures/leaf_icons/image-1194"
-        ],
-        [
             "image-1195",
             "textures/leaf_icons/image-1195"
         ],
@@ -1921,20 +1697,12 @@ let leafIconPack = new Map([
             "textures/leaf_icons/image-1196"
         ],
         [
-            "image-1197",
-            "textures/leaf_icons/image-1197"
-        ],
-        [
             "image-1198",
             "textures/leaf_icons/image-1198"
         ],
         [
             "image-1199",
             "textures/leaf_icons/image-1199"
-        ],
-        [
-            "image-120",
-            "textures/leaf_icons/image-120"
         ],
         [
             "image-1200",

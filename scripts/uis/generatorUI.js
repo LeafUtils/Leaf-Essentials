@@ -4,8 +4,10 @@ import config from "../config";
 import { ActionForm, ModalForm } from "../lib/form_func";
 import uiManager from "../uiManager";
 import { prismarineDb } from "../lib/prismarinedb";
+import configAPI from "../api/config/configAPI";
 
 uiManager.addUI(config.uiNames.Generator.Create, "Create Generator", (player, blockTypeID)=>{
+    if(!configAPI.getProperty("Generators")) return player.sendMessage("Generators are not enabled");
     let modalForm = new ModalForm();
     modalForm.textField(`You are making a generator for block ${blockTypeID}\n\nGenerator Name`, "Gold Generator", undefined)
     modalForm.textField("Respawn Time", "Respawn Time (in seconds)", undefined)
@@ -17,6 +19,7 @@ uiManager.addUI(config.uiNames.Generator.Create, "Create Generator", (player, bl
     })
 })
 uiManager.addUI(config.uiNames.Generator.EditRoot, "Generator Edit Root", (player)=>{
+    if(!configAPI.getProperty("Generators")) return player.sendMessage("Generators are not enabled");
     let form = new ActionForm();
     form.title("Generators");
     for(const generatorData of generator.getGenerators()) {
@@ -27,6 +30,7 @@ uiManager.addUI(config.uiNames.Generator.EditRoot, "Generator Edit Root", (playe
     form.show(player, false, ()=>{})
 })
 uiManager.addUI(config.uiNames.Generator.EditGenerator, "a", (player, id)=>{
+    if(!configAPI.getProperty("Generators")) return player.sendMessage("Generators are not enabled");
     let gen = generator.db.getByID(id);
     let form = new ActionForm();
     form.title(gen.data.name);
@@ -39,6 +43,7 @@ uiManager.addUI(config.uiNames.Generator.EditGenerator, "a", (player, id)=>{
     form.show(player, false, ()=>{})
 })
 uiManager.addUI(config.uiNames.Generator.EditGeneratorUpgrades, "a", (player, id)=>{
+    if(!configAPI.getProperty("Generators")) return player.sendMessage("Generators are not enabled");
     let gen = generator.db.getByID(id);
     let form = new ActionForm();
     form.button("New Upgrade", null, (player)=>{

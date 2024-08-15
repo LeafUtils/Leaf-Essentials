@@ -1,6 +1,6 @@
 import config from "../config";
 import { ActionForm } from "../lib/form_func";
-import { prismarineDb } from "../lib/prismarinedb";
+import { colors, prismarineDb } from "../lib/prismarinedb";
 import actionParser from "./actionParser";
 import normalForm from "./openers/normalForm";
 import { system, ScriptEventSource } from '@minecraft/server';
@@ -10,63 +10,14 @@ class UIBuilder {
     constructor() {
         this.db = prismarineDb.table(config.tableNames.uis);
         this.uiState = this.db.keyval("state");
-        // this.uiState.delete("CreateUIs");
-        if(!this.uiState.has("CreateUIs3")) {
-            // this.db.insertDocument({
-            //     "name": "<ServerTitle>",
-            //     "body": "<ServerBody>",
-            //     "type": 0,
-            //     special: true,
-            //     "buttons": [
-            //       {
-            //         "text": "§dTransfer Money",
-            //         "subtext": "Click me!",
-            //         "action": "/scriptevent leaf:open_default Leaf/Pay",
-            //         "iconID": "leaf/image-477",
-            //         "requiredTag": ""
-            //       },
-            //       {
-            //         "text": "§eWarps",
-            //         "subtext": "View/edit server warps",
-            //         "action": "/scriptevent leaf:open_default Leaf/Warps",
-            //         "iconID": "leaf/image-749",
-            //         "requiredTag": ""
-            //       },
-            //       {
-            //         "text": "§6Clans",
-            //         "subtext": "Click me!",
-            //         "action": "/scriptevent leaf:open_default Leaf/Clans",
-            //         "iconID": "leaf/image-625",
-            //         "requiredTag": ""
-            //       },
-            //       {
-            //         "text": "§cHomes",
-            //         "subtext": "View/Edit your homes",
-            //         "action": "/scriptevent leaf:open_default Leaf/Homes",
-            //         "iconID": "leaf/image-773",
-            //         "requiredTag": ""
-            //       },
-            //       {
-            //         "text": "§qLand Claims",
-            //         "subtext": "Claim your land",
-            //         "action": "/scriptevent leaf:open_default Leaf/LandClaims",
-            //         "iconID": "leaf/image-558",
-            //         "requiredTag": ""
-            //       },
-            //       {
-            //         "text": "§bConfig",
-            //         "subtext": "Edit Server Config",
-            //         "action": "/scriptevent leaf:open_default Leaf/Config/Root",
-            //         "iconID": "leaf/image-068",
-            //         "requiredTag": "admin"
-            //       }
-            //     ],
-            //     "scriptevent": "leaf_server_gui"
-            // })
-            this.uiState.set("CreateUIs3", 1);
-        }
-        // this.db.clear();
-
+        this.setState("ActionsV2Experiment", true);
+        this.setState("UIStateEditor", true);
+        this.setState("FormFolders", true);
+        this.setState("UISearch", true);
+        this.setState("UITags", true);
+        this.setState("BuiltinTemplates", true);
+        this.setState("PlayerContentManager", true);
+        this.setState("SubUIs", true);
         system.afterEvents.scriptEventReceive.subscribe(e=>{
             if(e.sourceType == ScriptEventSource.Entity && e.id == config.scripteventNames.open) {
                 let ui = this.db.findFirst({scriptevent: e.message});
@@ -75,6 +26,38 @@ class UIBuilder {
                 }
             }
         })
+        this.tagsDb = prismarineDb.table(`${config.tableNames.uis}~tags`)
+    }
+    createTag(name, color) {
+        if(colors.getColorCodes().includes(color)) {
+            if(this.tagsDb.findFirst({name})) return false;
+            this.tagsDb.insertDocument({
+                name,
+                color
+            })
+            return true;
+        }
+    }
+    deleteTag(name) {
+        let doc = this.tagsDb.findFirst({name});
+        if(doc) this.tagsDb.deleteDocumentByID(doc.id)
+    }
+    getTags() {
+        return this.tagsDb.data.filter(_=>{
+            return {
+                name: _.data.name,
+                color: _.data.color
+            }
+        })
+    }
+    deleteUI(id) {
+        this.db.trashDocumentByID(id);
+    }
+    getTrash() {
+        return this.db.getTrashedDocuments()
+    }
+    untrash(id) {
+        return this.db.untrashDocumentByID(id);
     }
     getByID(id) {
         return this.db.getByID(id);
@@ -90,17 +73,33 @@ class UIBuilder {
             scriptevent
         })
     }
-    createSubform(name, body = null, type = "normal", subname, root) {
-        let root2 = this.getByID(root);
-        if(!root2) return;
-        // return this.db.insertDocument({
-        //     name,
-        //     body,
-        //     type: type == "normal" ? 0 : -1,
-        //     buttons: [],
-        //     scriptevent: subname,
-        //     subname
-        // })
+    convertTypeToSubUI(number) {
+        const bitPosition = 7;
+        const mask = 1 << bitPosition;
+        return number ^ mask;
+    }
+    createSubUI(name, body = null, type = "normal", scriptevent, layout = 0) {
+        return this.db.insertDocument({
+            name,
+            body,
+            layout,
+            type: this.convertTypeToSubUI(type == "normal" ? 0 : -1),
+            buttons: [],
+            subuis: {},
+            scriptevent,
+        })
+    }
+    toggleState(state) {
+        this.uiState.set(
+            state,
+            this.uiState.has(state) ? this.uiState.get(state) == 0 ? 1 : 0 : 1
+        )
+    }
+    setState(state, value) {
+        this.uiState.set(state, value == true ? 1 : 0);
+    }
+    getState(state) {
+        return this.uiState.has(state) ? this.uiState.get(state) == 1 ? true : false : false;
     }
     addButtonToUI(id, text, subtext = null, action = "", iconID = "", requiredTag) {
         let doc = this.getByID(id);
@@ -118,7 +117,7 @@ class UIBuilder {
     open(id, player) {
         let doc = this.getByID(id);
         if(!doc) return;
-        if(doc.data.type == 0) return normalForm.open(player, doc.data);
+        if(doc.data.type == 0 || doc.data.type == 1) return normalForm.open(player, doc.data);
     }
     getUIs() {
         return this.db.findDocuments({type:0});
