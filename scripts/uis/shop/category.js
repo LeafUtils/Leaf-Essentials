@@ -31,9 +31,6 @@ uiManager.addUI(config.uiNames.Shop.Category, "Shop Category", (player, shopID, 
                 let count = prismarineDb.economy.getMoney(player, item.currency)
                 if(count >= item.price) {
                     uiManager.open(player, config.uiNames.Basic.Confirmation, `Are you sure you want to buy this item for ${item.price} §b${currency.symbol} ${currency.displayName}`, ()=>{
-                        prismarineDb.economy.removeMoney(player, item.price, item.currency);
-                        let inv = player.getComponent('inventory');
-                        inv.container.addItem(itemStack.clone())
                         if(shop.data.type == "PLAYER_SHOP") {
                             let stats = shopStats.has(shop.id) ? shopStats.get(shop.id) : {};
                             if(stats.sales) {
@@ -47,15 +44,24 @@ uiManager.addUI(config.uiNames.Shop.Category, "Shop Category", (player, shopID, 
                                 stats.moneyMade = item.price;
                             }
                             shopStats.set(shop.id, stats);
-                            let ownerID = shop.data.owner;
-                            let player = world.getPlayers().find(_=>playerStorage.getID(_) == ownerID);
-                            if(player) {
-                                prismarineDb.economy.addMoney(player, item.price, item.currency);
-                            } else {
-                                playerStorage.addReward(shop.data.owner, item.currency, item.price)
+                            try {
+                                let ownerID = shop.data.owner;
+                                let player = world.getPlayers().find(_=>playerStorage.getID(_) == ownerID);
+                                if(player) {
+                                    prismarineDb.economy.addMoney(player, item.price, item.currency);
+                                } else {
+                                    playerStorage.addReward(shop.data.owner, item.currency, item.price)
+                                }
+    
+                            } catch {
+
                             }
                             shopAPI.deleteItem(shopID, categoryID, i);
                         }
+
+                        prismarineDb.economy.removeMoney(player, item.price, item.currency);
+                        let inv = player.getComponent('inventory');
+                        inv.container.addItem(itemStack.clone())
                         uiManager.open(player, config.uiNames.Shop.Category, shopID, categoryID, error);
                     }, ()=>{
                         uiManager.open(player, config.uiNames.Shop.Category, shopID, categoryID, error);

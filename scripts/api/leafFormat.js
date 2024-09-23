@@ -1,3 +1,5 @@
+import { world } from "@minecraft/server";
+
 export class LeafFormatter {
     #variables;
     #functions;
@@ -25,10 +27,15 @@ export class LeafFormatter {
         let newText = text;
 
         for(const variable in this.#variables) {
-            if(!newText.includes(`<${variable}>`)) continue;
-            let newPart = this.#variables[variable](sessionData, sessionID);
-            if(!newPart) continue;
-            newText = newText.replaceAll(`<${variable}>`, newPart)
+            try {
+                if(!newText.includes(`<${variable}>`)) continue;
+                let newPart = this.#variables[variable](sessionData, sessionID);
+                if(!newPart) continue;
+                newText = newText.replaceAll(`<${variable}>`, newPart)
+    
+            } catch(e) {
+                newText += `${e}`
+            }
         }
 
         let fnCallsRegex = /\$([a-z_]*?)\(([\s\S]*?)\)/g

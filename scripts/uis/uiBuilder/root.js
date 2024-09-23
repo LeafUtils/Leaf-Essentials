@@ -6,16 +6,37 @@ import config from "../../config";
 import { ActionForm } from "../../lib/form_func";
 import http from "../../networkingLibs/currentNetworkingLib";
 import uiManager from "../../uiManager";
+import moment from '../../lib/moment'
+import emojis from '../../api/emojis'
 import { ChestFormData } from "../../lib/chestUI"
 uiManager.addUI(config.uiNames.UIBuilderRoot, "UI Builder Root", (player)=>{
     let form = new ActionForm();
-    form.title("UI Builder");
+    form.title("§t§a§b§b§e§d§r§fUIs");
+    form.button(`§t§a§b§a§c§t§i§v§e§r§f${emojis.campfire} UIs`, null, (player)=>{
+        uiManager.open(player, config.uiNames.UIBuilderRoot)
+    })
+    form.button(`§t§a§b§r§f${emojis.axolotl_bucket} Presets`, null, (player)=>{
+
+    })
+    form.button(`§t§a§b§r§f\uE66F Tab UIs`, null, (player)=>{
+        uiManager.open(player, config.uiNames.UIBuilderTabbed)
+
+    })
+    form.button(`§t§a§b§r§f${emojis.oak_sign} Info`, null, (player)=>{
+        uiManager.open(player, config.uiNames.UIBuilderInfo)
+    })
     form.button(`§aAdd\n§r§7Add a UI`, icons.resolve("leaf/image-740"), (player)=>{
         uiManager.open(player, config.uiNames.UIBuilderAdd);
     })
-    form.button(`§6Search\n§r§7Search your UIs`, icons.resolve("Packs/Asteroid/spyglass_flat"), (player)=>{
-        uiManager.open(player, config.uiNames.UIBuilderSearch);
+    form.button(`§6Create Category\n§r§7Create a folder for your UIs`, icons.resolve("^textures/items/name_tag"), (player)=>{
+        uiManager.open(player, config.uiNames.UIBuilderAdd);
     })
+    form.button(`§2Leaf GUIs\n§r§7Edit some built-in GUIs in leaf`, icons.resolve("leaf/image-0884"), (player)=>{
+        uiManager.open(player, config.uiNames.UIBuilderAdd);
+    })
+    // form.button(`§6Search\n§r§7Search your UIs`, icons.resolve("Packs/Asteroid/spyglass_flat"), (player)=>{
+    //     uiManager.open(player, config.uiNames.UIBuilderSearch);
+    // })
     if(http.player) {
         form.button(`§aBrowse\n§r§7Browse global GUIs`, icons.resolve("leaf/image-806"), (player)=>{
             http.makeRequest({
@@ -28,8 +49,8 @@ uiManager.addUI(config.uiNames.UIBuilderRoot, "UI Builder Root", (player)=>{
             })
         })
     }
-    for(const ui of uiBuilder.getUIs()) {
-        form.button(`§b${ui.data.name}\n§r§7Normal Form`, null, (player)=>{
+    for(const ui of uiBuilder.getUIs().sort((a,b)=>b.updatedAt-a.updatedAt)) {
+        form.button(`§b${ui.data.name}\n§r§7${emojis.clock} Updated ${moment(ui.updatedAt).fromNow()}${ui.data.scriptevent.length <= 16 ? ` §f| §7${emojis.chat} ${ui.data.scriptevent}` : ``}`, `textures/azalea_icons/ClickyClick`, (player)=>{
             uiManager.open(player, config.uiNames.UIBuilderEdit, ui.id)
         })
     }

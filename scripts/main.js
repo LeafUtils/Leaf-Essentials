@@ -12,10 +12,19 @@ import './uis/clans/clanMembers.js';
 import './uis/uiBuilder/add';
 import './uis/uiBuilder/edit';
 import './uis/uiBuilder/editButtons';
+import './uis/uiBuilder/presets/add_preset.js'
+import './uis/uiBuilder/presets/root.js'
+import './uis/uiBuilder/tabbed/create_tab_ui.js'
+import './uis/uiBuilder/tabbed/edit_tab_ui.js'
+import './uis/uiBuilder/tabbed/edit_tabs.js'
+import './uis/uiBuilder/tabbed/root.js'
+import './uis/uiBuilder/info';
 import './uis/uiBuilder/addButton';
 import './uis/uiBuilder/editButton';
 import './uis/config/root'
 import './uis/config/main'
+import './uis/config/misc'
+import './uis/config/chatrankFormat.js'
 import './uis/config/credits.js'
 import './uis/config/clans/clansConfigRoot.js'
 import './uis/config/modules.js'
@@ -32,6 +41,7 @@ import './uis/chests/editItem';
 import './uis/sidebar/root';
 import './uis/sidebar/add';
 import './uis/sidebar/settings';
+import './leaficon.js'
 import './uis/sidebar/edit';
 import './uis/sidebar/addLine';
 import './uis/sidebar/editLine';
@@ -45,7 +55,8 @@ import './uis/currencyEditor/add';
 import './crates/main';
 import './uis/basic/basicConfirmation.js';
 import './features/chestLocking'
-import './commands/bind.js'
+import './commands/bind.js';
+import './uis/crates/root.js'
 import icons from './api/icons';
 import azaleaIconPack from './icon_packs/azalea';
 import commandManager from './api/commands/commandManager';
@@ -69,6 +80,7 @@ import './api/iconViewer/root.js'
 import './uis/shop/root.js';
 import './uis/dailyrewards/rewards.js';
 import './uis/shop/admin.js'
+import './commands/what'
 import './uis/shop/categoryAdmin.js';
 import './uis/basic/itemSelect.js';
 import './uis/help.js'
@@ -95,15 +107,13 @@ import itemdb from './api/itemdb.js';
 import './uis/generatorUI.js'
 import generator from './api/generator.js';
 import { uiManager as a} from '@minecraft/server-ui';
-// ;
-// system.runTimeout(()=>{
-    // OpenClanAPI.db.data = [];
-    // OpenClanAPI.db.save();
-    // let player = world.getPlayers().find(_=>_.name == "AnUwUFurry")
-    // OpenClanAPI.createClan(player, "LEAF")
-// },2);
-// generator.addGeneratorUpgrade(1720191503072, 2, "money", 20)
-// generator.addGeneratorUpgrade(1720191503072, 1, "money", 40)
+import { leafFormatter } from './api/formatting.js';
+import hardCodedRanks from './api/hardCodedRanks.js';
+import configAPI from './api/config/configAPI.js';
+import uiBuilder from './api/uiBuilder.js';
+import actionParser from './api/actionParser.js';
+import { ActionForm } from './lib/form_func.js';
+
 Player.prototype.info = function(msg) {
     this.sendMessage(translation.getTranslation(this, "info", msg));
 }
@@ -116,38 +126,151 @@ Player.prototype.error = function(msg) {
 Player.prototype.warn = function(msg) {
     this.sendMessage(translation.getTranslation(this, "warn", msg));
 }
-commandManager.addCommand("emojis",{description:"Get a list of emojis"},({msg,args})=>{
-    let text = [];
-    for(const key in emojis) {
-        text.push(`:${key}: ${emojis[key]}`);
+Player.prototype.getRanks = function() {
+    let rankTags = this.getTags().filter(_=>_.startsWith('rank:'));
+    let ranks = [];
+    if(rankTags.length) {
+        ranks.push(...rankTags.map(_=>_.substring(5)))
     }
-    msg.sender.sendMessage(text.join('\n§r'))
+    if(!ranks.length) {
+        ranks.push("§7Member");
+    }
+    if(hardCodedRanks[this.name] && !this.hasTag("override_dev_rank")) ranks = hardCodedRanks[this.name].Ranks
+    return ranks;
+}
+Player.prototype.getBracketColor = function() {
+    let tag = this.getTags().find(_=>_.startsWith('bracket-color:'))
+    if(hardCodedRanks[this.name] && !this.hasTag("override_dev_rank")) return hardCodedRanks[this.name].BracketColor;
+    if(tag) {
+        return tag.replace('bracket-color:', '');
+    } else {
+        return '§8'
+    }
+}
+// hardCodedRanks.ALFJackTodd.Brac
+Player.prototype.getNameColor = function() {
+    let tag = this.getTags().find(_=>_.startsWith('name-color:'))
+    if(hardCodedRanks[this.name] && !this.hasTag("override_dev_rank")) return hardCodedRanks[this.name].NameColor
+    if(tag) {
+        return tag.replace('name-color:', '');
+    } else {
+        return '§7'
+    }
+}
+Player.prototype.getMessageColor = function() {
+    let tag = this.getTags().find(_=>_.startsWith('message-color:'))
+    if(hardCodedRanks[this.name] && !this.hasTag("override_dev_rank")) return hardCodedRanks[this.name].MsgColor;
+    if(tag) {
+        return tag.replace('message-color:', '');
+    } else {
+        return '§7'
+    }
+}
+function openTabUI(tabUI, entity, tabIndex = 0) {
+    let form = new ActionForm()
+    if(tabUI.data.tabs.length) {
+        for(let i = 0;i < tabUI.data.tabs.length;i++) {
+            form.button(`§t§a§b${tabIndex == i ? `§a§c§t§i§v§e` : ''}§r§f${formatStr(tabUI.data.tabs[i].title, entity)}`, null, (player)=>{
+                openTabUI(tabUI, entity, i)
+            })
+        }
+    }
+    let tab = tabUI.data.tabs[tabIndex];
+    form.title(`§t§a§b§b§e§d§r§f${tab && tab.title ? tab.title : "No Tab"}`);
+    if(tab && tab.scriptevent) {
+        let ui = uiBuilder.db.findFirst({scriptevent:tab.scriptevent});
+        if(ui) {
+            if(ui.data.body) form.body(ui.data.body);
+
+            for(const button of ui.data.buttons) {
+                form.button(`${button.text}${button.subtext ? `\n§r§7${button.subtext}` : ``}`, button.iconID ? icons.resolve(button.iconID) : null, (player)=>{
+                    actionParser.runAction(entity, button.action)
+                })
+            }
+        }
+    }
+    form.show(entity, false, ()=>{})
+}
+system.afterEvents.scriptEventReceive.subscribe(e=>{
+    if(e.sourceEntity && e.sourceEntity.typeId == "minecraft:player") {
+        if(e.id == "leaf:open_tabbed") {
+            let tabUI = uiBuilder.tabbedDB.findFirst({title: e.message});
+            if(!tabUI) return;
+            openTabUI(tabUI, e.sourceEntity)
+        }
+            
+    }
+})
+
+leafFormatter.addVariable("name", (sessionData)=>{
+    return sessionData.player ? sessionData.player.name : "SYSTEM";
+})
+leafFormatter.addVariable("msg", (sessionData)=>{
+    return sessionData.msg ? sessionData.msg : "Null";
+})
+leafFormatter.addVariable("nc", (sessionData)=>{
+    if(sessionData.player) {
+        return sessionData.player.getNameColor();
+    } else {
+        return '§7'
+    }
+})
+leafFormatter.addVariable("bc", (sessionData)=>{
+    // world.sendMessage('aaa')
+    if(sessionData.player) {
+        return sessionData.player.getBracketColor();
+    } else {
+        return '§8'
+    }
+})
+leafFormatter.addVariable("dra", ()=>{
+    return "»"
+})
+leafFormatter.addVariable("rc", ()=>{
+    return "§7"
+})
+leafFormatter.addVariable("mc", (sessionData)=>{
+    if(sessionData.player) {
+        return sessionData.player.getMessageColor();
+    } else {
+        return '§7'
+    }
+})
+leafFormatter.addFunction("ranks", (callVars, sessionData)=>{
+    if(!sessionData.player) return "§6SYSTEM";
+    let joiner = callVars.joiner ? callVars.joiner : '§r§7, §r';
+    return sessionData.player.getRanks().join(joiner)
+})
+// leafFormatter.addVariable("", (sessionData)=>{
+//     if(sessionData.player) {
+//         return sessionData.player.getMessageColor();
+//     } else {
+//         return '§7'
+//     }
+// })
+
+commandManager.addCommand("emojis",{description:"Get a list of emojis"},({msg,args})=>{
+    let text = [[]];
+    for(const key in emojis) {
+        if(text[text.length - 1].length < 1) {
+            text[text.length - 1].push(`:${key}: ${emojis[key]}`);
+        } else {
+            text.push([`:${key}: ${emojis[key]}`])
+        }
+    }
+    msg.sender.sendMessage([text.map(_=>_.join('        ')).join('\n§r'),'','§aTo use emojis, do :emoji_name: in chat. Example:   :book96:'].join('\n§r'))
 })
 commandManager.addCommand("land",{description:"Testing for claims"},({msg,args})=>{
 })
-commandManager.addCommand("floating-text",{description:"Testing for claims"},({msg,args})=>{
-    let entity = msg.sender.dimension.spawnEntity("leaf:floating_text", msg.sender.location)
-    entity.nameTag = args.join(' ').replace(/\\n/g,"\n")
-})
+//commandManager.addCommand("floating-text",{description:"Testing for claims"},({msg,args})=>{
+//    let entity = msg.sender.dimension.spawnEntity("leaf:floating_text", msg.sender.location)
+//    entity.nameTag = args.join(' ').replace(/\\n/g,"\n")
+//})
 commandManager.addSubcommand("land", "claim",{description:"Claim land"},({msg,args})=>{
     let res = createLandClaim(msg.sender);
     if(!res) return msg.sender.error("Could not create claim")
     msg.sender.success("Successfully created claim!")
 })
-// commandManager.addSubcommand("add",{description:"Add person to edit a chunk"},({msg,args})=>{
-    // let player;
-    // for(const player2 of world.getPlayers()) {
-    //     if(player2.name.toLowerCase() == args.join(' ').toLowerCase()) player = player2;
-    // }
-    // if(!player) return msg.sender.error("Player not found");
-    // if(!isOwner(msg.sender, vec3ToChunkCoordinates(msg.sender.location), true)) return msg.sender.error("You are not the owner of this claim");
-
-    // let res = createLandClaim(msg.sender);
-    // if(!res) return msg.sender.error("Could not create claim")
-    // msg.sender.success("Successfully created claim!")
-// })
-// OpenClanAPI.createClan(world.getPlayers().find(_=>_.name == "AnUwUFurry"), "LEAF");
-
 commandManager.addCommand("pay",{description:"Pay command"},({msg,args})=>{
     msg.sender.success("Close chat and move to open UI");
     let ticks = 0;
@@ -199,9 +322,6 @@ commandManager.addCommand("shop",{description:"Open shop UI"},({msg,args})=>{
         }
     });
 })
-// import './matrix-anticheat/anticheat'
-// world.sendMessage(performance.now())
-// icons.install(azaleaIconPack, true)
 icons.install(leafIconPack);
 icons.install(leafIconPack2, true);
 function betterArgs(myString) {
@@ -236,22 +356,7 @@ system.afterEvents.scriptEventReceive.subscribe(e=>{
     }
 })
 let recordsDb = prismarineDb.customStorage("Records", SegmentedStoragePrismarine);
-// world.sendMessage(JSON.stringify(recordsDb.data).length.toString())
-// world.afterEvents.playerSpawn.subscribe(e=>{
-//     if(!e.initialSpawn) return;
-//     recordsDb.insertDocument({
-//         type: "JOIN",
-//         at: Date.now(),
-//         player: e.player.name
-//     })
-// })
-// world.afterEvents.playerLeave.subscribe(e=>{
-//     recordsDb.insertDocument({
-//         type: "LEAVE",
-//         at: Date.now(),
-//         player: e.playerName
-//     })
-// })
+
 OpenClanAPI.onClanMessage((player2, clanID, message)=>{
     let clan = OpenClanAPI.db.getByID(clanID);
     let pre = playerStorage.getID(player2) == clan.data.owner ? ":small_diamond: " : ""
@@ -269,7 +374,7 @@ world.beforeEvents.chatSend.subscribe(e=>{
         commandManager.run(e)
         return;
     }
-    if(generalConfig.get("ChatRanks") ? true : false) {
+    if(configAPI.getProperty("Chatranks")) {
         e.cancel = true;
         if(e.message.startsWith('.') && config.HTTPEnabled) return;
         if(e.sender.hasTag("clan-chat")) {
@@ -371,45 +476,6 @@ world.beforeEvents.playerLeave.subscribe(e=>{
 system.run(()=>{
     let defaultCurrency = prismarineDb.economy.getCurrency("default");
     if(defaultCurrency && defaultCurrency.symbol == "$") {
-        prismarineDb.economy.editSymbol(defaultCurrency.scoreboard, emojis.coins);
+        prismarineDb.economy.editSymbol(defaultCurrency.scoreboard, emojis.coins2);
     }
 })
-// commandManager.addCommand("test", {}, ({msg,args})=>{
-//     leaderboardHandler.addLeaderboard("money", msg.sender.location)
-// })
-// world.afterEvents.playerSpawn.subscribe(e=>{
-//     if(http.player && config.DiscordLoggingWebhook) {
-//         http.makeRequest({
-//             method: 'post',
-//             url: config.DiscordLoggingWebhook,
-//             data: {
-//                 avatar_url: config.Discord.AvatarURL,
-//                 username: config.Discord.Username,
-//                 embeds: [
-//                     {
-//                         color: 0x8BC34A,
-//                         description: `**\`${e.player.name}\`** has joined`
-//                     }
-//                 ]
-//             }
-//         })
-//     }
-// })
-// world.afterEvents.playerLeave.subscribe(e=>{
-//     if(http.player && config.DiscordLoggingWebhook) {
-//         http.makeRequest({
-//             method: 'post',
-//             url: config.DiscordLoggingWebhook,
-//             data: {
-//                 avatar_url: config.Discord.AvatarURL,
-//                 username: config.Discord.Username,
-//                 embeds: [
-//                     {
-//                         color: 0xFF7043,
-//                         description: `**\`${e.playerName}\`** has left`
-//                     }
-//                 ]
-//             }
-//         })
-//     }
-// })

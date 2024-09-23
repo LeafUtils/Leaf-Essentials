@@ -10,6 +10,7 @@ class UIBuilder {
     constructor() {
         this.db = prismarineDb.table(config.tableNames.uis);
         this.uiState = this.db.keyval("state");
+        this.tabbedDB = prismarineDb.table("TabbedUI_DB")
         this.setState("ActionsV2Experiment", true);
         this.setState("UIStateEditor", true);
         this.setState("FormFolders", true);
@@ -88,6 +89,28 @@ class UIBuilder {
             subuis: {},
             scriptevent,
         })
+    }
+    createTabbedUI(title) {
+        this.tabbedDB.insertDocument({
+            type: "TAB_UI",
+            title,
+            tabs: [],
+        })
+    }
+    getTabbedUIs() {
+        return this.tabbedDB.findDocuments({type:"TAB_UI"})
+    }
+    addTab(id, tabTitle, tabUIScriptevent) {
+        let tabUI = this.tabbedDB.getByID(id);
+        if(!tabUI) return;
+        tabUI.data.tabs.push({
+            title: tabTitle,
+            scriptevent: tabUIScriptevent
+        })
+        this.tabbedDB.overwriteDataByID(tabUI.id, tabUI.data);
+    }
+    deleteTabbedUI(id) {
+        this.tabbedDB.deleteDocumentByID(id);
     }
     toggleState(state) {
         this.uiState.set(

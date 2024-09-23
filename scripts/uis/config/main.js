@@ -24,37 +24,40 @@ uiManager.addUI(config.uiNames.ConfigMain, "Config Main", (player)=>{
     form.button(`§l§nGenerator Settings\n§r§7Make high quality custom generators`, icons.resolve("leaf/image-045"), (player)=>{
         uiManager.open(player, config.uiNames.Generator.EditRoot)
     })
-    form.button(`§l§bDaily Rewards\n§r§7Give players daily rewards`, icons.resolve("Packs/Asteroid/winPING"), (player)=>{
+    form.button(`§l§dRewards\n§r§7Give players time based rewards`, icons.resolve("Packs/Asteroid/winPING"), (player)=>{
         uiManager.open(player, config.uiNames.DailyRewards.Root, "REWARDS")
     })
-    form.button(`§l§bWeekly Rewards\n§r§7Give players weekly rewards`, icons.resolve("Packs/Asteroid/winPING"), (player)=>{
-        uiManager.open(player, config.uiNames.DailyRewards.Root, "REWARDS_WEEKLY")
-    })
-    form.button(`§l§bMonthly Rewards\n§r§7Give players monthly rewards`, icons.resolve("Packs/Asteroid/winPING"), (player)=>{
-        uiManager.open(player, config.uiNames.DailyRewards.Root, "REWARDS_MONTHLY")
-    })
-    // form.button(`§l§bLeaderboards\n§r§7Configure Leaderboards`, icons.resolve("Packs/Asteroid/beacon"), (player)=>{
-
+    // form.button(`§l§bWeekly Rewards\n§r§7Give players weekly rewards`, icons.resolve("Packs/Asteroid/winPING"), (player)=>{
+    //     uiManager.open(player, config.uiNames.DailyRewards.Root, "REWARDS_WEEKLY")
     // })
-
-
-
-
-
-    // form.button(`§l§6Bounty Settings\n§r§7Configure Bounties`, icons.resolve("leaf/image-0909"), (player)=>{
-
+    // form.button(`§l§bMonthly Rewards\n§r§7Give players monthly rewards`, icons.resolve("Packs/Asteroid/winPING"), (player)=>{
+    //     uiManager.open(player, config.uiNames.DailyRewards.Root, "REWARDS_MONTHLY")
     // })
+    form.button(`§l§bLeaderboards\n§r§7Configure Leaderboards`, icons.resolve("leaf/image-521"), (player)=>{
+
+    })
+
+
+
+
+
+    form.button(`§l§6Bounty Settings\n§r§7Configure Bounties`, icons.resolve("leaf/image-0909"), (player)=>{
+
+    })
     // form.button(`§l§bCrate Settings\n§r§7Crate and mange crates`, icons.resolve("leaf/image-630"), (player)=>{
 
     // })
 
 
 
+    form.button(`§l§9Permissions\n§r§7Manage player permissions`, icons.resolve("leaf/image-647"), (player)=>{
+
+    })
 
 
-    // form.button(`§l§3PVP Settings\n§r§7Configure pvp settings`, icons.resolve("Packs/Asteroid/random6"), (player)=>{
+    form.button(`§l§3PVP Settings\n§r§7Configure pvp settings`, icons.resolve("leaf/image-727"), (player)=>{
 
-    // })
+    })
     // form.button(`§l§cAnti Cheat\n§r§7Configure ant cheat`, icons.resolve("Packs/Asteroid/smithing_icon"), (player)=>{
 
     // })
@@ -65,15 +68,15 @@ uiManager.addUI(config.uiNames.ConfigMain, "Config Main", (player)=>{
 
 
 
-    // form.button(`§l§fPlayer Settings\n§r§7Configure player settings`, icons.resolve("Packs/Asteroid/custom"), (player)=>{
+    form.button(`§l§fPlayer Settings\n§r§7Configure player settings`, icons.resolve("Packs/Asteroid/custom"), (player)=>{
 
-    // })
-    // form.button(`§l§gChat Settings\n§r§7Configure chat`, icons.resolve("leaf/image-640"), (player)=>{
+    })
+    form.button(`§l§gChat Settings\n§r§7Configure chat`, icons.resolve("leaf/image-640"), (player)=>{
 
-    // })
-    // form.button(`§l§5Custom Commands\n§r§7Make commands like !myshittycommand`, icons.resolve("leaf/image-1199"), (player)=>{
+    })
+    form.button(`§l§5Custom Commands\n§r§7Make commands like !myshittycommand`, icons.resolve("leaf/image-1199"), (player)=>{
 
-    // })
+    })
 
 
 
@@ -84,22 +87,28 @@ uiManager.addUI(config.uiNames.ConfigMain, "Config Main", (player)=>{
     // form.button(`§l§dVerification Settings\n§r§7Stop annoying kids from joining`, icons.resolve("Packs/Asteroid/adventure_crystal_epic"), (player)=>{
 
     // })
-    // form.button(`§l§aWarp Settings\n§r§7Warp`, icons.resolve("Packs/Asteroid/global"), (player)=>{
+    form.button(`§l§aWarp Settings\n§r§7Warp`, icons.resolve("leaf/image-749"), (player)=>{
 
-    // })
+    })
     // form.button(`§l§nBank Settings\n§r§7Banky wanky`, icons.resolve("Packs/Asteroid/vault"), (player)=>{
 
     // })
-    // form.button(`§l§qAuction House\n§7Manage auction house`, icons.resolve("Packs/Asteroid/random19"), (player)=>{
+    form.button(`§l§qAuction House\n§7Manage auction house`, icons.resolve("leaf/image-751"), (player)=>{
 
-    // })
-    form.button(`§l§bClans\n§r§7Configure clans`, icons.resolve("leaf/image-480"), (player)=>{
+    })
+    form.button(`§l§cClans\n§r§7Configure clans`, icons.resolve("leaf/image-480"), (player)=>{
         uiManager.open(player, config.uiNames.Config.Clans)
     })
+    // form.button(`§l§6Crates\n§r§7Configure crates`, icons.resolve("leaf/image-480"), (player)=>{
+        // uiManager.open(player, config.uiNames.Crates.Root)
+    // })
     form.button(`§l§eEvents\n§r§7Events`, icons.resolve("leaf/image-478"), (player)=>{
         uiManager.open(player, config.uiNames.Events.EventsRoot)
     })
     form.button(`§l§aCurrency Settings\n§r§7Manage currencies`, icons.resolve("leaf/image-481"), (player)=>{
+        uiManager.open(player, config.uiNames.CurrencyEditor)
+    })
+    form.button(`§l§pMiscellaneous Tools\n§r§7Extra utilities`, icons.resolve("leaf/image-619"), (player)=>{
         uiManager.open(player, config.uiNames.CurrencyEditor)
     })
     form.show(player)
