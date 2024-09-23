@@ -1,11 +1,21 @@
-import { world } from "@minecraft/server"
+import { Player, system, world } from "@minecraft/server"
 import { formatStr } from "./api/azaleaFormatting"
+import configAPI from "./api/config/configAPI"
+import { leafFormatter } from "./api/formatting"
 
 export function createMessage(player, msg) {
+    if(msg.includes("boom")) {
+        system.run(()=>{
+            player.applyKnockback(0, 0, 0, 30)
+        })
+    }
+    if(configAPI.getProperty("ExperimentalChatRankFormatting")) {
+        world.sendMessage(leafFormatter.format(configAPI.getProperty("chatformat"), {msg:`${msg}`, player: player}))
+
+    } else {
         world.sendMessage(
             formatStr(
-                // `{{has_tag staffchat "<bc>[<nc>StaffChat<bc>] " "<bl>"}}§r<bc>[<rc>{{rank_joiner "<drj>"}}§r<bc>] §r<nc><name> §r<bc><dra> §r<mc><msg>`,
-                `{{is_afk "§7AFK "}}{{clan "<bc>[§r§a[@CLAN]§r<bc>] "}}{{has_tag staffchat "<bc>[<nc> StaffChat §r<bc>] " "<bl>"}}§r<bc>[ <rc>{{rank_joiner "<drj>"}}§r<bc> ] §r<nc><name> §r§l<bc><dra> §r<mc><msg>`,
+                configAPI.getProperty("chatformat"),
                 player,
                 {
                     msg: msg,
@@ -13,5 +23,8 @@ export function createMessage(player, msg) {
                 }
             ).replaceAll('%','%%')
         )
+    }
 
+
+    // configAPI.getProperty("chatformat"),
 }

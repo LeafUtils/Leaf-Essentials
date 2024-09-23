@@ -1,4 +1,7 @@
 export default {
+    defaults: {
+        chatformat: `{{is_afk "§7AFK "}}{{clan "<bc>[§r§7<nc>[@CLAN]§r<bc>] "}}{{has_tag staffchat "<bc>[<nc> StaffChat §r<bc>] " "<bl>"}}§r<bc>[ <rc>{{rank_joiner "<drj>"}}§r<bc> ] §r<nc><name> §r§l<bc><dra> §r<mc><msg>`
+    },
     tableNames: {
         uis: "uis"
     },
@@ -8,6 +11,9 @@ export default {
         openDefault: "leafgui:",
     },
     uiNames: {
+        Crates: {
+            Root: "crates_root | Leaf/Crates/Root"
+        },
         UIBuilderRoot: "ui_builder_main_page | Leaf/UIBuilder/Root",
         UIBuilderAdd: "ui_builder_create_ui | Leaf/UIBuilder/Add",
         UIBuilderSearch: "ui_builder_search_uis | Leaf/UIBuilder/Search",
@@ -15,13 +21,16 @@ export default {
         UIBuilderEditButtons: "ui_builder_edit_buttons | Leaf/UIBuilder/EditButtons",
         UIBuilderAddButton: "ui_builder_add_button | Leaf/UIBuilder/AddButton",
         UIBuilderEditButton: "ui_builder_edit_button | Leaf/UIBuilder/EditButton",
+        UIBuilderTemplates: "ui_builder_templates | Leaf/UIBuilder/Templates",
+        UIBuilderTemplatesAdd: "ui_builder_templates_add | Leaf/UIBuilder/Templates/Add",
+        UIBuilderInfo: "ui_builder_info | Leaf/UIBuilder/Info",
+        UIBuilderTabbed: "ui_builder_tabbed | Leaf/UIBuilder/Tabbed",
+        UIBuilderTabbedCreate: "ui_builder_tabbed_create | Leaf/UIBuilder/Tabbed/Create",
+        UIBuilderTabbedEdit: "ui_builder_tabbed_edit | Leaf/UIBuilder/Tabbed/Edit",
+        UIBuilderTabbedEditTabs: "ui_builder_tabbed_edit_tabs | Leaf/UIBuilder/Tabbed/EditTabs",
         ConfigRoot: "config_menu_start_page | Leaf/Config/Root",
         ConfigMain: "config_menu_main_settings | Leaf/Config/Main",
         Config: {
-<<<<<<< Updated upstream
-            Clans: "Leaf/Config/Clans",
-            Modules: "Leaf/Config/Modules"
-=======
             Clans: "clans_config | Leaf/Config/Clans",
             Modules: "modules_config | Leaf/Config/Modules",
             Misc: "misc_config | Leaf/Config/Misc",
@@ -33,7 +42,6 @@ export default {
             Add: "pcm_add",
             Edit: "pcm_edit",
             Moderate: "pcm_moderate"
->>>>>>> Stashed changes
         },
         ConfigCredits: "credits | Leaf/Config/Credits",
         ChestGuiRoot: "chest_gui_main_page | Leaf/ChestGUIs/Root",

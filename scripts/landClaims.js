@@ -167,8 +167,8 @@ world.beforeEvents.playerInteractWithBlock.subscribe(e=>{
     }
 })
 world.beforeEvents.playerInteractWithEntity.subscribe(e=>{
-    let chunk = vec3ToChunkCoordinates(e.player);
-    if(keyval.has(`claim:${chunk.x},${chunk.z}:${e.player.dimension.id}`)) {
+    let chunk = vec3ToChunkCoordinates(e.target.location);
+    if(keyval.has(`claim:${chunk.x},${chunk.z}:${e.target.dimension.id}`)) {
         if(!isOwner(e.player, chunk)) {
             e.cancel = true;
             system.run(()=>{
