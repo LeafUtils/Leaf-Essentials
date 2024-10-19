@@ -1,11 +1,11 @@
 {
 	"format_version": 2,
 	"header": {
-		"name": "§2Leaf §aEssentials §7- §6v0.2.0 §bRelease Candidate 1 §7| §9BETA",
-		"description": "Made by powertrash on discord. Supports minecraft 1.21.20",
+		"name": "§2Leaf §aEssentials §7- §6v0.2.0 §bRelease Alpha §eTesting Version 2 §7| §9BETA",
+		"description": "FOR FRUITKITTY ONLY. IF HE LEAKS HE LIKES TOUCHING KIDS.",
 		"min_engine_version": [1, 20, 80],
 		"uuid": "89ed7dc6-aace-431e-b02b-162b61ea2ea7",
-		"version": [1, 0, 17]
+		"version": [1, 0, 24]
 	},
 	"modules": [
 		{
@@ -14,23 +14,23 @@
 			"language": "javascript",
 			"uuid": "193360c7-c32b-4eb1-8c5c-dd1d188d1fa3",
 			"entry": "scripts/main.js",
-			"version": [1, 0, 17]
+			"version": [1, 0, 24]
 		},
 		{
 			"description": "Data Module",
 			"type": "data",
 			"uuid": "afecf66b-2000-443d-81d1-4064c97c7c1a",
-			"version": [1, 0, 17]
+			"version": [1, 0, 24]
 		}
 	],
 	"dependencies": [
 		{
 			"module_name": "@minecraft/server",
-			"version": "1.14.0-beta"
+			"version": "1.15.0-beta"
 		},
 		{
 			"module_name": "@minecraft/server-ui",
-			"version": "1.3.0-beta"
+			"version": "1.4.0-beta"
 		}
 	],
 	"capabilities": ["script_eval"],

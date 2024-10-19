@@ -34,6 +34,7 @@ function betterArgs(myString) {
 function getScore(objective, player) {
     try {
       let scoreboard = world.scoreboard.getObjective(objective);
+      if(!scoreboard) scoreboard = world.scoreboard.addObjective(objective, objective);
       if (!scoreboard) return 0;
       let score = 0;
       try {
@@ -47,6 +48,13 @@ function getScore(objective, player) {
       return 0;
     }
   }
+  function setScore(objective, player, score) {
+    try {
+      let scoreboard = world.scoreboard.getObjective(objective);
+      if(!scoreboard) scoreboard = world.scoreboard.addObjective(objective, objective);
+        scoreboard.setScore(player, score)
+    } catch {}
+}
   function divide(num1, num2) {
     if (num1 > 0 && num2 == 0) return num1;
     if (num1 == 0 && num2 > 0) return -num2;
@@ -71,6 +79,22 @@ function getScore(objective, player) {
     return number
   }
 let a = new Map();
+world.afterEvents.entityHitEntity.subscribe(e=>{
+    if(e.damagingEntity.typeId == "minecraft:player") {
+        let cps = getScore("azalea:cps", e.damagingEntity);
+        cps++;
+        setScore("azalea:cps", e.damagingEntity, cps);
+    }
+})
+system.runInterval(()=>{
+    for(const player of world.getPlayers()) {
+        // let cps = getScore("azalea:cps", player);
+        // if(cps > 0) {
+        //     cps--;
+        setScore("azalea:cps", player, 0);
+        // }
+    }
+},20)
 system.runInterval(()=>{
     a.clear();
     timeArray = [];
@@ -173,11 +197,6 @@ export function formatStr(str, player = null, extraVars = {}, session = Date.now
         moonPhase == MoonPhase.WaxingGibbous ? "Waxing Gibbous" : "Full Moon";
     vars.moonPhase = `${moonPhaseText}`;
     vars.randomShit = `${Math.random()}`;
-    let amountOfSheepInNether = world.getDimension('nether').getEntities({type:"minecraft:sheep"}).length;
-    vars.amountOfSheepInNetherDividedBy2Times6 = (`${amountOfSheepInNether > 0 ? (amountOfSheepInNether/ 2) * 6 : 0}`)
-    vars.trashIsHardBoolean = world.getPlayers().find(_=>_.name == "ZSStudios") ? `true` : `false`;
-    vars.overworldDimensionID = world.getDimension('overworld').id;
-    vars.entitiesInOverworld = world.getDimension('overworld').getEntities().length;
 
     let date = new Date();
     let _12hourformat = date.getHours();
@@ -286,8 +305,22 @@ export function formatStr(str, player = null, extraVars = {}, session = Date.now
             return newText.join('');
         }
     }
-    for(const emoji in emojis) {
-        newStr = newStr.replaceAll(`:${emoji}:`, emojis[emoji])
+    function extractEmojis(str) {
+        // Regular expression to match valid text between `::`
+        const regex = /:([a-z0-9_-]+):/g;
+    
+        // Find all matches
+        const matches = str.match(regex);
+    
+        return matches && typeof matches === "object" && Array.isArray(matches) ? matches : [];
+    }
+    if(str.includes(':')) {
+        let emojisUsed = extractEmojis(newStr);
+        if(emojisUsed && Array.isArray(emojisUsed) && emojisUsed.length) {
+            for(const emoji of emojisUsed) {
+                if(emojis[emoji.substring(1).slice(0,-1)]) newStr = newStr.replaceAll(`${emoji}`, emojis[emoji.substring(1).slice(0,-1)])
+            }
+        }
     }
     vars.cause_an_error = "<cause_an_error>"
     

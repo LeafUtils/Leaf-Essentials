@@ -9,8 +9,11 @@ system.runInterval(()=>{
         let tag = player.getTags().find(_=>_.startsWith('sidebar:'));
         if(tag) sidebarName = tag.substring('sidebar:'.length);
         try {
-            player.onScreenDisplay.setTitle(sidebarEditor.parseEntireSidebar(player, sidebarName));
+            let sidebar = sidebarEditor.parseEntireSidebar(player, sidebarName);
+            if(sidebar != "@@LEAF_SIDEBAR_IGNORE") player.onScreenDisplay.setTitle(`§r${sidebar}`);
 
-        } catch {}
+        } catch(e) {
+            console.error(e)
+        }
     }
 },1);
